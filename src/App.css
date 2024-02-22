@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --primaryColor: #072541;
+  --secondaryColor: #00417e;
+}
+body{
+  font-family: 'Poppins', sans-serif;
+}
+
+.sub-head{
+  color: rgb(101, 101, 101);
+}
+
+.blue-btn{
+  background-color:#003a70;
+  color: white;
+  border: 0;
+  border-radius: 50px;
+  padding: 7px 30px;
+  font-weight: 500;
+}
+.blue-btn:hover{
+  background-color:var(--primaryColor) ;
+}
+
+.bg-body-tertiary{
+  background-color: transparent !important;
+}
+
+.accordion-button{
+  font-weight: 500 !important;
+}
+
+/* Navbar */
+.navbar-brand{
+  margin: 0;
+}
+.navbar-expand-lg .navbar-nav .nav-link{
+  color: black;
+  font-weight: 500;
+  border-radius: 50px;
+  padding: 7px 15px;
+}
+.navbar-expand-lg .navbar-nav .nav-link:hover{
+  background-color: rgb(244, 244, 244);
+}
+.navbar-toggler:focus{
+  box-shadow: none;
+}
+.dropdown-menu{
+  padding: 0;
+  overflow: hidden;
+}
+.dropdown-divider{
+  margin: 0;
+}
+.dropdown-item{
+  padding: 7px 15px;
+  font-weight: 500;
+  text-align: center;
+}
+.dropdown-item.active, .dropdown-item:active{
+  background-color: var(--secondaryColor);
+}
+
+/* why section */
+.why-card{
+  border: 1px solid #005bb0;
+  border-radius: 15px;
+  color: white;
+  text-align: center;
+  background-color: #001e3b;
+  padding: 1rem;
+  /* margin-bottom: 1rem; */
+  height: 100%;
+}
+.why-card h5{
+  margin: 1rem 0;
+}
+.why-img-div{
+  height: 100px;
+}
+.why-img-div img{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+/* Footer */
+footer{
+  background-color: var(--primaryColor);
+}
+footer .nav{
+  border-color: #00417e !important;
+}
+
+footer .nav .nav-item .nav-link, footer p{
+  color: white !important; 
+}
+
+/* Login page */
+.form-control{
+  border: 1px solid rgb(185, 185, 185) !important;
+}
+
+.copy-btn{
+  font-size: smaller;
+  top: 5px;
+  right: 5px;
+}
+.copy-btn:hover{
+  border-color: rgb(182, 182, 182) !important;
+}
+
+@media (max-width: 992px){
+  .blue-btn{
+    text-align: center;
+  }
+  .nav-link{
+    text-align: center;
+  }
+}
+@media (max-width: 768px){
+  .hero-sec{
+    flex-direction: column-reverse;
+  }
+  .blue-btn{
+    width: 100%;
+  }
+
+}
