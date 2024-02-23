@@ -109,7 +109,7 @@ footer .nav .nav-item .nav-link, footer p{
   top: 5px;
   right: 5px;
 }
-.copy-btn:hover{
+.copy-btn:hover, .login-btn:hover{
   border-color: rgb(182, 182, 182) !important;
 }
 

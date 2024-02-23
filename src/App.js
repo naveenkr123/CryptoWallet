@@ -4,6 +4,8 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Account from "./Pages/Account";
 import FAQ from "./Pages/FAQ";
+import Transfer from "./Pages/Transfer";
+import Settings from "./Pages/Settings";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/transfer" element={<Transfer />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </BrowserRouter>
     </div>
