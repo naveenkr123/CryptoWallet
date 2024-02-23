@@ -7,6 +7,12 @@ function Account() {
   let address = "UXh51PakgDO4bcgxHosRvFeJXPusDtQ3";
   const qrCodeRef = useRef(null);
 
+  function copyAddress() {
+    navigator.clipboard.writeText(address);
+    document.getElementById("copy_btn").innerHTML = "Copied!";
+    document.getElementById("copy_btn").style.color = "green";
+  }
+
   const downloadQRCode = () => {
     // Get the QR code canvas
     const qrCodeCanvas = qrCodeRef.current.getElementsByTagName("canvas")[0];
@@ -59,10 +65,16 @@ function Account() {
               className="rounded border p-2 mb-3 bg-light position-relative"
               style={{ wordWrap: "break-word" }}
             >
-              <button className="rounded border border-2 bg-light px-2 position-absolute copy-btn">
+              <button
+                onClick={copyAddress}
+                id="copy_btn"
+                className="rounded border border-2 bg-light px-2 position-absolute copy-btn"
+              >
                 Copy
               </button>
-              <h6 className="m-0">UXh51PakgDO4bcgxHosRvFeJXPusDtQ3</h6>
+              <h6 id="wallet_address" className="m-0">
+                UXh51PakgDO4bcgxHosRvFeJXPusDtQ3
+              </h6>
             </div>
 
             <div
