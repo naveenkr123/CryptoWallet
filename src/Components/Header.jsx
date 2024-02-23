@@ -19,7 +19,7 @@ function Header() {
             <NavLink className="nav-link" to="/transfer">
               Transfer
             </NavLink>
-            <NavLink className="nav-link" to="/settings">
+            <NavLink className="nav-link" to="/notifications">
               Notifications( 2 )
             </NavLink>
             <NavLink className="nav-link" to="/settings">

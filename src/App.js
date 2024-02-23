@@ -6,6 +6,7 @@ import Account from "./Pages/Account";
 import FAQ from "./Pages/FAQ";
 import Transfer from "./Pages/Transfer";
 import Settings from "./Pages/Settings";
+import Notifications from "./Pages/Notifications";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/transfer" element={<Transfer />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/Notifications" element={<Notifications />} />
         </Routes>
       </BrowserRouter>
     </div>

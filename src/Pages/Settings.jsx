@@ -1,6 +1,6 @@
 import React from "react";
 import Wrapper from "../Components/Wrapper";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 function Register() {
   return (
