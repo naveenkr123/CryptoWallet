@@ -17,28 +17,32 @@ function Login() {
                 Login to your account
               </h5>
               <p className="fs-6 fw-medium my-2 ms-1">User ID</p>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder=""
-                />
-              </div>
-              <div className="mb-4">
-                <p className="fs-6 fw-medium my-2 ms-1">Password</p>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder=""
-                />
-              </div>
-              <button className="blue-btn rounded w-100 py-2 px-3">
-                Login
-              </button>
+              <form action="">
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder=""
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <p className="fs-6 fw-medium my-2 ms-1">Password</p>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder=""
+                    required
+                  />
+                </div>
+                <button className="blue-btn rounded w-100 py-2 px-3">
+                  Login
+                </button>
+              </form>
 
               <p className="text-center my-4">
                 Don't have an account?{" "}

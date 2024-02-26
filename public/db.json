@@ -1,0 +1,63 @@
+[
+    {
+      "userID": "john_doe123",
+      "walletAddress": "0x45aDfE8bC88f5b54c0dAd09F68641AbC8F5Ae34C",
+      "password": "password123",
+      "balance": 1000
+    },
+    {
+      "userID": "alice_smith456",
+      "walletAddress": "0x23aBcE9dF77eC4A3F1eCd6b8AaE5678DdEfF9cDe",
+      "password": "qwerty456",
+      "balance": 2500
+    },
+    {
+      "userID": "bob_jones789",
+      "walletAddress": "0x89cDeE5aB47F72fCd9eAfB2bAbDe4546EeFbc456",
+      "password": "pass1234",
+      "balance": 500
+    },
+    {
+      "userID": "sarah_brown101",
+      "walletAddress": "0x76DeAb6cF65f7fDa8bAeE6d8C6aBccEFd34dE789",
+      "password": "abcd9876",
+      "balance": 750
+    },
+    {
+      "userID": "david_wilson202",
+      "walletAddress": "0x09AeFc3bC54dEf345AcCb2DfdEf9871cdEf34567",
+      "password": "passpass",
+      "balance": 2000
+    },
+    {
+      "userID": "emily_taylor303",
+      "walletAddress": "0x99BcEd456F76Efa8Dfe2BcfbA1CcE345FfaFbC12",
+      "password": "letmein",
+      "balance": 1500
+    },
+    {
+      "userID": "michael_miller404",
+      "walletAddress": "0x87AbCdEf98aBc56DeF1234567890dCeeF8765432",
+      "password": "abc123",
+      "balance": 300
+    },
+    {
+      "userID": "olivia_anderson505",
+      "walletAddress": "0x65DeEfc8Df3456AbCf9871a2Bc3DeF45678FeD90",
+      "password": "password2023",
+      "balance": 1250
+    },
+    {
+      "userID": "william_thomas606",
+      "walletAddress": "0x11BcDeEf9F876aBcDe45fEdC9876aBcDeF987654",
+      "password": "passpasspass",
+      "balance": 1750
+    },
+    {
+      "userID": "ava_wright707",
+      "walletAddress": "0x78DeEfAaBc67DdEf1234567890123cDeF4567890",
+      "password": "secure123",
+      "balance": 800
+    }
+  ]
+  
