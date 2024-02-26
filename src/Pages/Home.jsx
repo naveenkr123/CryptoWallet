@@ -2,6 +2,7 @@ import React from "react";
 import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row } from "react-bootstrap";
 import banner from "../images/banner.svg";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -21,7 +22,9 @@ function Home() {
                       Safely store, manage, and trade your digital assets with
                       confidence
                     </p>
-                    <button className="blue-btn">START NOW</button>
+                    <Link to="/register">
+                      <button className="blue-btn">START NOW</button>
+                    </Link>
                   </div>
                 </div>
               </Col>

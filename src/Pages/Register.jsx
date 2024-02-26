@@ -48,7 +48,7 @@ function Register() {
         walletAddress: walletAddress,
       };
 
-      fetch("http://localhost:8000/users", {
+      fetch("http://10.5.48.118:8000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
