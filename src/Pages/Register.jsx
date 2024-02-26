@@ -16,6 +16,17 @@ function Register() {
     console.log(user);
   }, [user]);
 
+  function validation() {
+    if (
+      document.getElementById("passwordinput").value.length < 6 ||
+      document.getElementById("passRepeatinput").value.length < 6
+    ) {
+      document.getElementById("pass-validate").style.display = "block";
+    } else {
+      document.getElementById("pass-validate").style.display = "none";
+    }
+  }
+
   function generateRandomString() {
     const characters =
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -29,47 +40,71 @@ function Register() {
     return result;
   }
 
-  function setData(event) {
+  async function setData(event) {
     event.preventDefault();
     var userID = document.getElementById("userIDinput").value;
     var password = document.getElementById("passwordinput").value;
     var repeatPass = document.getElementById("passRepeatinput").value;
-    const walletAddress = generateRandomString();
-    console.log(walletAddress);
 
     if (password !== repeatPass) {
       console.log("Password Not Match");
       document.getElementById("pass-error").style.display = "block";
     } else {
-      const updatedUser = {
-        ...user,
-        userID: userID,
-        password: password,
-        walletAddress: walletAddress,
-      };
+      try {
+        const response = await fetch(
+          `http://localhost:8000/users?userID=${userID}`
+        );
+        const contentLength = response.headers.get("Content-Length");
+        if (parseInt(contentLength) !== 2) {
+          console.log("User ID already exists");
+          document.getElementById("id_exist").style.display = "block";
+          // Display appropriate error message
+          // For example:
+          // document.getElementById("userID-error").style.display = "block";
+        } else {
+          // User ID is available, proceed with registration
+          const walletAddress = generateRandomString();
+          console.log(walletAddress);
+          const updatedUser = {
+            ...user,
+            userID: userID,
+            password: password,
+            walletAddress: walletAddress,
+          };
 
-      fetch("http://10.5.48.118:8000/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedUser),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data); // Log response data
-          setUser(updatedUser); // Update state after successful POST
-          setTimeout(() => {
-            navigate("/login");
-            window.location.reload(); // Reload the page
-          }, 2000);
-        })
-        .catch((error) => console.error("Error:", error));
+          const createUserResponse = await fetch(
+            "http://localhost:8000/users",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(updatedUser),
+            }
+          );
 
-      document.getElementById("pass-error").style.display = "none";
-
-      //success msg
-      document.getElementById("acc-success").style.display = "block";
+          if (createUserResponse.ok) {
+            console.log("Account created successfully!");
+            setUser(updatedUser);
+            document.getElementById("pass-error").style.display = "none";
+            document.getElementById("id_exist").style.display = "none";
+            document.getElementById("acc-success").style.display = "block";
+            setTimeout(() => {
+              navigate("/login");
+              window.location.reload();
+            }, 2000);
+          } else {
+            console.error(
+              "Error creating account:",
+              createUserResponse.statusText
+            );
+            // Display appropriate error message
+          }
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        // Handle error
+      }
     }
   }
 
@@ -78,7 +113,7 @@ function Register() {
       <section>
         <Container>
           <div className="w-100 h-100 py-5 p-md-5">
-            <div className="col-lg-8 login-div mx-auto pb-5">
+            <div className="col-lg-6 login-div mx-auto pb-5">
               <h2 className="text-center fw-bold">
                 Crypto<span style={{ color: "#072541" }}>Wallet</span>
               </h2>
@@ -95,7 +130,7 @@ function Register() {
               <form onSubmit={setData}>
                 <Row>
                   <Col lg="12">
-                    <div className="mb-3">
+                    <div className="mb-2">
                       <p className="fs-6 fw-medium my-2 ms-1">Create User ID</p>
                       <input
                         id="userIDinput"
@@ -105,6 +140,7 @@ function Register() {
                         placeholder=""
                         required
                       />
+                      <p id="id_exist">User ID already exists!</p>
                     </div>
                   </Col>
                   <Col lg="6">
@@ -116,6 +152,7 @@ function Register() {
                         type="text"
                         className="form-control"
                         placeholder=""
+                        onChange={validation}
                         required
                       />
                     </div>
@@ -131,11 +168,13 @@ function Register() {
                         type="text"
                         className="form-control"
                         placeholder=""
+                        onChange={validation}
                         required
                       />
                     </div>
                   </Col>
                 </Row>
+                <p id="pass-validate">Password must be atleast 6 characters.</p>
                 <p id="pass-error">Password doesn't match!</p>
                 <button
                   type="submit"

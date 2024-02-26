@@ -112,7 +112,8 @@ footer .nav .nav-item .nav-link, footer p{
 .copy-btn:hover, .login-btn:hover{
   border-color: rgb(182, 182, 182) !important;
 }
-#pass-error{
+
+#id_exist, #pass-validate, #pass-error{
   display: none;
   color: red;
   margin: 0;
