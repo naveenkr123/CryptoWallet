@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,10 +11,6 @@ function Register() {
     password: "",
     balance: 0,
   });
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   function validation() {
     if (
@@ -51,6 +47,7 @@ function Register() {
       document.getElementById("pass-error").style.display = "block";
     } else {
       try {
+        console.log("arrived");
         const response = await fetch(
           `http://localhost:8000/users?userID=${userID}`
         );
@@ -193,6 +190,11 @@ function Register() {
               <div className="alert alert-warning" role="alert">
                 Warning! Please note down account credentials because there is
                 no account recovery option due to security reasons.
+              </div>
+              <div className="alert alert-info" role="alert">
+                We don't ask for your personal details such as email, phone
+                number, or even your name. We strive to keep your identity
+                anonymous.
               </div>
             </div>
           </div>

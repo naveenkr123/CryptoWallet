@@ -7,9 +7,9 @@ function Header() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary py-3">
       <Container>
-        <Navbar.Brand href="/" className="fw-bold">
-          Crypto<span style={{ color: "#072541" }}>Wallet</span>
-        </Navbar.Brand>
+        <Link to="/" className="fw-bold navbar-brand">
+          CryptoWallet
+        </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mx-auto text-center">

@@ -2,15 +2,43 @@ import React, { useRef } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Container } from "react-bootstrap";
 import QRCode from "qrcode.react";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { AppContext } from "./AppContext";
 
 function Account() {
-  let address = "UXh51PakgDO4bcgxHosRvFeJXPusDtQ3";
   const qrCodeRef = useRef(null);
+  const status = useContext(AppContext);
+  const navigate = useNavigate(); // Initialize useNavigate
+  const userData = status.userData;
+
+  console.log("context", status);
+
+  // Redirect to login if userData is not available
+  useEffect(() => {
+    if (!userData || !status.loginStatus) {
+      navigate("/login");
+    }
+  }, [userData, status, navigate]);
+
+  // Render loading or nothing until redirected
+  if (!userData || !status.loginStatus) {
+    return null;
+  }
+
+  console.log(userData);
 
   function copyAddress() {
-    navigator.clipboard.writeText(address);
+    navigator.clipboard.writeText(status.userData.walletAddress);
     document.getElementById("copy_btn").innerHTML = "Copied!";
     document.getElementById("copy_btn").style.color = "green";
+  }
+
+  function copyID() {
+    navigator.clipboard.writeText(status.userData.userID);
+    document.getElementById("copy_btn_id").innerHTML = "Copied!";
+    document.getElementById("copy_btn_id").style.color = "green";
   }
 
   const downloadQRCode = () => {
@@ -56,10 +84,27 @@ function Account() {
             <div className="border border-2 rounded p-3 mb-3">
               <p className="m-0 fw-semibold">Balance: </p>
               <h3 className="m-0 mt-1">
-                BTC <span className="text-success">1.005</span>
+                BTC{" "}
+                <span className="text-success">{status.userData.balance}</span>
               </h3>
             </div>
 
+            <p className="m-0 fw-semibold mt-4 mb-2">User ID: </p>
+            <div
+              className="rounded border p-2 mb-3 bg-light position-relative"
+              style={{ wordWrap: "break-word" }}
+            >
+              <button
+                onClick={copyID}
+                id="copy_btn_id"
+                className="rounded border border-2 bg-light px-2 position-absolute copy-btn"
+              >
+                Copy
+              </button>
+              <h6 id="user_id" className="m-0">
+                {status.userData.userID}
+              </h6>
+            </div>
             <p className="m-0 fw-semibold mt-4 mb-2">Crypto Address: </p>
             <div
               className="rounded border p-2 mb-3 bg-light position-relative"
@@ -73,7 +118,7 @@ function Account() {
                 Copy
               </button>
               <h6 id="wallet_address" className="m-0">
-                UXh51PakgDO4bcgxHosRvFeJXPusDtQ3
+                {status.userData.walletAddress}
               </h6>
             </div>
 
@@ -83,7 +128,7 @@ function Account() {
               ref={qrCodeRef}
             >
               <QRCode
-                value={address}
+                value={status.userData.walletAddress}
                 style={{ width: "100%", height: "100%" }}
               />
             </div>
