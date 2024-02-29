@@ -113,12 +113,12 @@ footer .nav .nav-item .nav-link, footer p{
   border-color: rgb(182, 182, 182) !important;
 }
 
-#id_exist, #pass-validate, #pass-error{
+#id_exist, #pass-validate, #pass-error, #zero-error{
   display: none;
   color: red;
   margin: 0;
 }
-#acc-success{
+#acc-success, #balance_error{
   display: none;
 }
 

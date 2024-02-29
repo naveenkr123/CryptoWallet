@@ -5,7 +5,7 @@
       "userID": "naveen123",
       "walletAddress": "UXh51PakgDO4bcgxHosRvFeJXPusDtQ3",
       "password": "abc123",
-      "balance": 0
+      "balance": 5
     },
     {
       "id": "2d5d",
@@ -61,6 +61,13 @@
       "userID": "Johan666",
       "walletAddress": "eGvjhq6hRT88qLy4hAcIjowqLsta6kt4",
       "password": "qwerty123",
+      "balance": 0
+    },
+    {
+      "id": "ed3e",
+      "userID": "Vivek",
+      "walletAddress": "W6Jxru1M7K2W7WGl0bzSDYz198ArVct9",
+      "password": "qwe123",
       "balance": 0
     }
   ]

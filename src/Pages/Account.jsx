@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { AppContext } from "./AppContext";
+import { Link } from "react-router-dom";
 
 function Account() {
   const qrCodeRef = useRef(null);
@@ -26,8 +27,6 @@ function Account() {
   if (!userData || !status.loginStatus) {
     return null;
   }
-
-  console.log(userData);
 
   function copyAddress() {
     navigator.clipboard.writeText(status.userData.walletAddress);
@@ -88,6 +87,9 @@ function Account() {
                 <span className="text-success">{status.userData.balance}</span>
               </h3>
             </div>
+            <Link to="/transfer">
+              <button className="btn btn-success">Transfer BTC</button>
+            </Link>
 
             <p className="m-0 fw-semibold mt-4 mb-2">User ID: </p>
             <div
