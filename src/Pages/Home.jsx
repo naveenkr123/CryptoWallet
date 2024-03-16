@@ -43,7 +43,7 @@ function Home() {
         >
           <Container>
             <div className="px-md-5">
-              <h2 className="text-light pb-3">What is CryptoWallet?</h2>
+              <h2 className="text-light mb-3">What is CryptoWallet?</h2>
               <p className="text-light">
                 CryptWallet, your premier online cryptocurrency wallet platform,
                 offers a seamless and secure solution for managing your digital

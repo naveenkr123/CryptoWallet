@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Container } from "react-bootstrap";
 import QRCode from "qrcode.react";
@@ -9,33 +9,50 @@ import { AppContext } from "./AppContext";
 import { Link } from "react-router-dom";
 
 function Account() {
+  const [balance, setBalance] = useState("");
   const qrCodeRef = useRef(null);
-  const status = useContext(AppContext);
+  const myContext = useContext(AppContext);
   const navigate = useNavigate(); // Initialize useNavigate
-  const userData = status.userData;
+  const userData = myContext.userData;
 
-  console.log("context", status);
+  useEffect(() => {
+    currentData();
+  }, [myContext]);
 
   // Redirect to login if userData is not available
   useEffect(() => {
-    if (!userData || !status.loginStatus) {
+    if (!userData || !myContext.loginStatus) {
       navigate("/login");
     }
-  }, [userData, status, navigate]);
+  }, [userData, myContext, navigate]);
 
   // Render loading or nothing until redirected
-  if (!userData || !status.loginStatus) {
+  if (!userData || !myContext.loginStatus) {
     return null;
   }
 
+  async function currentData() {
+    try {
+      if (!myContext.userData) return; // Exit if userData is not available yet
+      const response = await fetch(
+        `http://localhost:8000/users?walletAddress=${userData.walletAddress}`
+      );
+      const userData2 = await response.json();
+      // console.log(userData2[0].balance);
+      setBalance(userData2[0].balance);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   function copyAddress() {
-    navigator.clipboard.writeText(status.userData.walletAddress);
+    navigator.clipboard.writeText(myContext.userData.walletAddress);
     document.getElementById("copy_btn").innerHTML = "Copied!";
     document.getElementById("copy_btn").style.color = "green";
   }
 
   function copyID() {
-    navigator.clipboard.writeText(status.userData.userID);
+    navigator.clipboard.writeText(myContext.userData.userID);
     document.getElementById("copy_btn_id").innerHTML = "Copied!";
     document.getElementById("copy_btn_id").style.color = "green";
   }
@@ -80,11 +97,10 @@ function Account() {
         <Container>
           <div className="col-lg-8 border border-2 rounded p-4 my-5 mx-auto">
             <h2 className="mb-4 text-center">Wallet</h2>
-            <div className="border border-2 rounded p-3 mb-3">
+            <div className="bg-light border rounded p-3 mb-3">
               <p className="m-0 fw-semibold">Balance: </p>
               <h3 className="m-0 mt-1">
-                BTC{" "}
-                <span className="text-success">{status.userData.balance}</span>
+                BTC <span className="text-success">{balance}</span>
               </h3>
             </div>
             <Link to="/transfer">
@@ -104,7 +120,7 @@ function Account() {
                 Copy
               </button>
               <h6 id="user_id" className="m-0">
-                {status.userData.userID}
+                {myContext.userData.userID}
               </h6>
             </div>
             <p className="m-0 fw-semibold mt-4 mb-2">Crypto Address: </p>
@@ -120,7 +136,7 @@ function Account() {
                 Copy
               </button>
               <h6 id="wallet_address" className="m-0">
-                {status.userData.walletAddress}
+                {myContext.userData.walletAddress}
               </h6>
             </div>
 
@@ -130,7 +146,7 @@ function Account() {
               ref={qrCodeRef}
             >
               <QRCode
-                value={status.userData.walletAddress}
+                value={myContext.userData.walletAddress}
                 style={{ width: "100%", height: "100%" }}
               />
             </div>

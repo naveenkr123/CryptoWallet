@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root{
   --primaryColor: #072541;
   --secondaryColor: #00417e;
 }
 body{
-  font-family: 'Poppins', sans-serif;
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: "Inter", sans-serif;
 }
 
 .sub-head{
@@ -15,13 +15,14 @@ body{
 .blue-btn{
   background-color:#003a70;
   color: white;
-  border: 0;
+  border: 2px solid #003a70;
   border-radius: 50px;
   padding: 7px 30px;
   font-weight: 500;
 }
 .blue-btn:hover{
   background-color:var(--primaryColor) ;
+  border: 2px solid var(--primaryColor);
 }
 
 .bg-body-tertiary{
@@ -62,6 +63,16 @@ body{
 }
 .dropdown-item.active, .dropdown-item:active{
   background-color: var(--secondaryColor);
+}
+
+.nav-btn-cont{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+#loggedin-nav{
+  display: none;
 }
 
 /* why section */
@@ -110,7 +121,7 @@ footer .nav .nav-item .nav-link, footer p{
   right: 5px;
 }
 .copy-btn:hover, .login-btn:hover{
-  border-color: rgb(182, 182, 182) !important;
+  border-color: rgb(198, 198, 198) !important;
 }
 
 #id_exist, #pass-validate, #pass-error, #zero-error{
@@ -118,7 +129,7 @@ footer .nav .nav-item .nav-link, footer p{
   color: red;
   margin: 0;
 }
-#acc-success, #balance_error{
+#acc-success, #balance_error, #WA-error, #transfer-success, #WA-same{
   display: none;
 }
 
@@ -128,6 +139,9 @@ footer .nav .nav-item .nav-link, footer p{
   }
   .nav-link{
     text-align: center;
+  }
+  .nav-btn-cont {
+    flex-direction: column;
   }
 }
 @media (max-width: 768px){

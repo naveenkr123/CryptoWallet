@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Container } from "react-bootstrap";
+import { useNavigate } from "react-router";
+import { AppContext } from "./AppContext";
 
 function Register() {
+  const status = useContext(AppContext);
+  const navigate = useNavigate(); // Initialize useNavigate
+  const userData = status.userData;
+
+  // console.log("context", status);
+
+  // Redirect to login if userData is not available
+  useEffect(() => {
+    if (!userData || !status.loginStatus) {
+      navigate("/login");
+    }
+  }, [userData, status, navigate]);
+
+  // Render loading or nothing until redirected
+  if (!userData || !status.loginStatus) {
+    return null;
+  }
   return (
     <Wrapper>
       <section>

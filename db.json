@@ -1,74 +1,18 @@
 {
   "users": [
     {
-      "id": "af6e",
+      "id": "b9b9",
       "userID": "naveen123",
-      "walletAddress": "UXh51PakgDO4bcgxHosRvFeJXPusDtQ3",
+      "walletAddress": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
       "password": "abc123",
-      "balance": 5
-    },
-    {
-      "id": "2d5d",
-      "userID": "demo",
-      "walletAddress": "CzXw8Iq16x86rRTMrE5lsi1tZ0PYM5W9",
-      "password": "demo123",
-      "balance": 0
-    },
-    {
-      "id": "6159",
-      "userID": "shivam4",
-      "walletAddress": "CpA1FQzxPaCvumAnXbLMyen6AiMhlSDZ",
-      "password": "qwerty123",
       "balance": 0
     },
     {
       "id": "0b21",
-      "userID": "shizuka Kumar",
+      "userID": "shizuka",
       "walletAddress": "qu0AxqAnbZZKpHWaj3orxbDlpr5dBHKb",
-      "password": "abcdefg",
-      "balance": 0
-    },
-    {
-      "id": "f36a",
-      "userID": "navven kumar",
-      "walletAddress": "UFiq3qBylQryadPj3UoLNXRoeaTqWFg3",
-      "password": "naveen",
-      "balance": 0
-    },
-    {
-      "id": "323e",
-      "userID": "apple",
-      "walletAddress": "tfp4OJZyQsok9VP1iK3e5z6EEikVA3Ga",
-      "password": "apple123",
-      "balance": 0
-    },
-    {
-      "id": "70dc",
-      "userID": "Ashish Rai",
-      "walletAddress": "3M48yeh93Cm8s0HvRV4WB3ArnHoc28vO",
-      "password": "Ashish@121003",
-      "balance": 0
-    },
-    {
-      "id": "473a",
-      "userID": "Ashwani",
-      "walletAddress": "dVOz5c8hFq7Cmzf7jQBeS1P7g8cYgu2B",
       "password": "abc123",
-      "balance": 0
-    },
-    {
-      "id": "faaf",
-      "userID": "Johan666",
-      "walletAddress": "eGvjhq6hRT88qLy4hAcIjowqLsta6kt4",
-      "password": "qwerty123",
-      "balance": 0
-    },
-    {
-      "id": "ed3e",
-      "userID": "Vivek",
-      "walletAddress": "W6Jxru1M7K2W7WGl0bzSDYz198ArVct9",
-      "password": "qwe123",
-      "balance": 0
+      "balance": 5
     }
   ]
 }

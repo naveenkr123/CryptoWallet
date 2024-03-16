@@ -7,15 +7,15 @@ import { useContext } from "react";
 import { AppContext } from "./AppContext";
 
 function Login() {
-  const status = useContext(AppContext);
+  const [userID, setUserID] = useState("");
+  const [password, setPassword] = useState("");
+
+  const myContext = useContext(AppContext);
   const navigate = useNavigate(); // Initialize useNavigate
   const [errorMessage, setErrorMessage] = useState("");
 
   async function verifyAccount(event) {
     event.preventDefault();
-
-    const userID = document.getElementById("loginID").value;
-    const password = document.getElementById("loginPass").value;
 
     try {
       const response = await fetch(
@@ -29,9 +29,9 @@ function Login() {
         const user = userData[0]; // Assuming userID is unique
         if (user.password === password) {
           // Password matches
-          status.setLoginStatus(true);
-          status.setUserData(userData[0]);
-          navigate("/account", { state: { userData } }); // Navigate to Account component with state
+          myContext.setLoginStatus(true);
+          myContext.setUserData(userData[0]);
+          navigate("/account"); // Navigate to Account page
         } else {
           setErrorMessage("Incorrect password!");
         }
@@ -70,6 +70,8 @@ function Login() {
                   <form onSubmit={verifyAccount}>
                     <div className="mb-3">
                       <input
+                        value={userID}
+                        onChange={(e) => setUserID(e.target.value)}
                         type="text"
                         className="form-control"
                         id="loginID"
@@ -81,6 +83,8 @@ function Login() {
                     <div className="mb-4">
                       <p className="fs-6 fw-medium my-2 ms-1">Password</p>
                       <input
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         type="password"
                         className="form-control"
                         id="loginPass"
