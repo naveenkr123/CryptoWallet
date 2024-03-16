@@ -37,7 +37,7 @@ function Account() {
       }
     }
     currentData();
-  }, []);
+  }, [userData.walletAddress, myContext.userData]);
 
   // Render loading or nothing until redirected
   if (!userData || !myContext.loginStatus) {
