@@ -15,10 +15,6 @@ function Account() {
   const navigate = useNavigate(); // Initialize useNavigate
   const userData = myContext.userData;
 
-  useEffect(() => {
-    currentData();
-  }, []);
-
   // Redirect to login if userData is not available
   useEffect(() => {
     if (!userData || !myContext.loginStatus) {
@@ -26,23 +22,26 @@ function Account() {
     }
   }, [userData, myContext, navigate]);
 
+  useEffect(() => {
+    async function currentData() {
+      try {
+        if (!myContext.userData) return; // Exit if userData is not available yet
+        const response = await fetch(
+          `http://localhost:8000/users?walletAddress=${userData.walletAddress}`
+        );
+        const userData2 = await response.json();
+        // console.log(userData2[0].balance);
+        setBalance(userData2[0].balance);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+    currentData();
+  }, []);
+
   // Render loading or nothing until redirected
   if (!userData || !myContext.loginStatus) {
     return null;
-  }
-
-  async function currentData() {
-    try {
-      if (!myContext.userData) return; // Exit if userData is not available yet
-      const response = await fetch(
-        `http://localhost:8000/users?walletAddress=${userData.walletAddress}`
-      );
-      const userData2 = await response.json();
-      // console.log(userData2[0].balance);
-      setBalance(userData2[0].balance);
-    } catch (error) {
-      console.error("Error:", error);
-    }
   }
 
   function copyAddress() {
