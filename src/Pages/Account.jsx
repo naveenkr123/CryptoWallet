@@ -17,7 +17,7 @@ function Account() {
 
   useEffect(() => {
     currentData();
-  }, [myContext]);
+  }, []);
 
   // Redirect to login if userData is not available
   useEffect(() => {
