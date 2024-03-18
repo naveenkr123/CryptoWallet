@@ -129,7 +129,7 @@ footer .nav .nav-item .nav-link, footer p{
   color: red;
   margin: 0;
 }
-#acc-success, #balance_error, #WA-error, #transfer-success, #WA-same{
+#acc-success, #balance_error, #WA-error, #transfer-success, #WA-same, #change-pass{
   display: none;
 }
 

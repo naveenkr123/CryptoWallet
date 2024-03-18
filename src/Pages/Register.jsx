@@ -47,7 +47,6 @@ function Register() {
       document.getElementById("pass-error").style.display = "block";
     } else {
       try {
-        console.log("arrived");
         const response = await fetch(
           `http://localhost:8000/users?userID=${userID}`
         );

@@ -23,21 +23,23 @@ function Account() {
   }, [userData, myContext, navigate]);
 
   useEffect(() => {
-    async function currentData() {
+    async function fetchUserData() {
       try {
-        if (!myContext.userData) return; // Exit if userData is not available yet
-        const response = await fetch(
-          `http://localhost:8000/users?walletAddress=${userData.walletAddress}`
-        );
-        const userData2 = await response.json();
-        // console.log(userData2[0].balance);
-        setBalance(userData2[0].balance);
+        if (myContext.loginStatus && userData) {
+          const response = await fetch(
+            `http://localhost:8000/users?walletAddress=${userData.walletAddress}`
+          );
+          const userData2 = await response.json();
+          setBalance(userData2[0].balance);
+        }
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error fetching user data:", error);
       }
     }
-    currentData();
-  }, [userData.walletAddress, myContext.userData]);
+
+    fetchUserData();
+  }, [myContext.loginStatus, userData]);
+  
 
   // Render loading or nothing until redirected
   if (!userData || !myContext.loginStatus) {

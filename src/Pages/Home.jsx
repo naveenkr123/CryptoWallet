@@ -1,6 +1,6 @@
 import React from "react";
 import Wrapper from "../Components/Wrapper";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Accordion } from "react-bootstrap";
 import banner from "../images/banner.svg";
 import { Link } from "react-router-dom";
 
@@ -64,94 +64,93 @@ function Home() {
 
         <section className="py-5">
           <Container>
-            <h2 className="text-center pb-5">Why choose CryptoWallet?</h2>
-            <div>
-              <Row>
-                <Col lg="6">
-                  <div
-                    className="p-4 rounded text-light mb-4"
-                    style={{ backgroundColor: "#072541" }}
-                  >
-                    <h5
-                      className="text-center mb-3"
-                      style={{ color: "#00ED64" }}
-                    >
-                      Secure Wallet Storage
-                    </h5>
-                    <p className="lh-base">
-                      Advanced Encryption: Utilize cutting-edge encryption
-                      protocols to safeguard your digital assets. Multi-factor
-                      Authentication: Add an extra layer of security with
-                      multi-factor authentication methods like biometrics or
-                      OTP. Offline Cold Storage: Protect your funds from online
-                      threats by storing them securely offline.
-                    </p>
-                  </div>
-                </Col>
-                <Col lg="6">
-                  <div
-                    className="p-4 rounded text-light mb-4"
-                    style={{ backgroundColor: "#072541" }}
-                  >
-                    <h5
-                      className="text-center mb-4"
-                      style={{ color: "#00ED64" }}
-                    >
-                      User-Friendly Interface
-                    </h5>
-                    <p>
-                      Intuitive Design: Navigate through your wallet
-                      effortlessly with a user-friendly interface. Customizable
-                      Dashboard: Tailor your dashboard to display the
-                      information that matters most to you. Seamless
-                      Transactions: Execute transactions quickly and easily with
-                      a streamlined process.
-                    </p>
-                  </div>
-                </Col>
-                <Col lg="6">
-                  <div
-                    className="p-4 rounded text-light mb-4"
-                    style={{ backgroundColor: "#072541" }}
-                  >
-                    <h5
-                      className="text-center mb-4"
-                      style={{ color: "#00ED64" }}
-                    >
-                      24/7 Customer Support
-                    </h5>
-                    <p>
-                      Dedicated Assistance: Access round-the-clock support from
-                      a team of knowledgeable experts. Live Chat: Receive
-                      immediate assistance through our live chat feature for any
-                      urgent queries. Comprehensive FAQs: Find answers to common
-                      questions and troubleshooting tips in our extensive FAQ
-                      section.
-                    </p>
-                  </div>
-                </Col>
-                <Col lg="6">
-                  <div
-                    className="p-4 rounded mb-4"
-                    style={{ backgroundColor: "#072541" }}
-                  >
-                    <h5
-                      className="text-center mb-4"
-                      style={{ color: "#00ED64" }}
-                    >
-                      Integration with Popular Cryptocurrencies{" "}
-                    </h5>
-                    <p className="text-light">
-                      Extensive Coin Support: Seamlessly manage a wide range of
-                      cryptocurrencies within a single wallet. Cross-Platform
-                      Compatibility: Access your wallet from various devices and
-                      operating systems without limitations. Real-Time Updates:
-                      Stay informed about the latest developments and prices of
-                      your favorite cryptocurrencies.
-                    </p>
-                  </div>
-                </Col>
-              </Row>
+            <h3 className="text-center">Frequently Asked Questions</h3>
+            <div className="d-flex">
+              <div className="p-lg-5 mx-auto col-md-10">
+                <Accordion defaultActiveKey="0">
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header>What is CryptoWallet?</Accordion.Header>
+                    <Accordion.Body>
+                      CryptoWallet is an easy to use browser based Bitcoin
+                      wallet. We aim to provide usability and security at the
+                      same time.
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header>
+                      Are there any fees on CryptoWallet?
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      We do not charge any fees except for the transaction fees
+                      on the bitcoin network.
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header>
+                      Is CryptoWallet easier than the standard bitcoin.org
+                      client?
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      CryptoWallet is as simple and easy as possible, we have a
+                      very minimalistic interface which should be easy to
+                      understand for most people.
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="4">
+                    <Accordion.Header>
+                      Is it more secure than the standard bitcoin.org client?
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      With the standard bitcoin.org client you will need alot of
+                      knowledge about how to protect your wallet.dat file, which
+                      is basically impossible for most normal people who do not
+                      run multiple PCs, virtualization software, encryption
+                      tools etc. Also if you do not do regular backups on the
+                      standard client, there is a high risk of loosing your
+                      coins. On CryptoWallet we take care of all that,
+                      protecting your bitcoin funds while all you have to do is
+                      keep your password and optionally transaction PIN in a
+                      safe place.{" "}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="5">
+                    <Accordion.Header>
+                      How does CryptoWallet protect my bitcoins?
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      We are using encrypted bitcoin wallets, hard disk
+                      encryption, SSL certificates and a hardened webserver for
+                      maximum security of your Bitcoins. We also do daily
+                      encrypted backups to different offsite locations
+                      worldwide. Most bitcoins arent even stored on the
+                      webserver, we store them on an impossible to hack offline
+                      wallet{" "}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="6">
+                    <Accordion.Header>
+                      What happens if i lose my password?
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      Dont lose your password or transaction PIN! We do not have
+                      password recovery functions for security reasons. (Most
+                      accounts get hacked these days using weak password
+                      recovery functions) We recommend you write down your
+                      password and if you have it enabled also your transaction
+                      PIN on a piece of paper and store it securely.{" "}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="7">
+                    <Accordion.Header>
+                      Can i get a new bitcoin address?
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      To keep it simple we only support one address per account,
+                      but you are free to open as many accounts as you wish!{" "}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </div>
             </div>
           </Container>
         </section>
