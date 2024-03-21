@@ -74,7 +74,7 @@ function Register() {
           };
 
           const createUserResponse = await fetch(
-            "http://${myContext.serverIP}:8000/users",
+            `http://${myContext.serverIP}:8000/users`,
             {
               method: "POST",
               headers: {
