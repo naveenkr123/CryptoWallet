@@ -22,27 +22,23 @@ function Account() {
     }
   }, [userData, myContext, navigate]);
 
-  useEffect(
-    () => {
-      async function fetchUserData() {
-        try {
-          if (myContext.loginStatus && userData) {
-            const response = await fetch(
-              `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
-            );
-            const userData2 = await response.json();
-            setBalance(userData2[0].balance);
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        if (myContext.loginStatus && userData) {
+          const response = await fetch(
+            `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+          );
+          const userData2 = await response.json();
+          setBalance(userData2[0].balance);
         }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
+    }
 
-      fetchUserData();
-    },
-    [myContext.loginStatus, userData],
-    myContext.serverIP
-  );
+    fetchUserData();
+  }, [myContext.loginStatus, userData, myContext.serverIP]);
 
   // Render loading or nothing until redirected
   if (!userData || !myContext.loginStatus) {
