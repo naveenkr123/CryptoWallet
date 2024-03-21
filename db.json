@@ -16,7 +16,7 @@
       "password": "abcs123",
       "pin": null,
       "TFA": false,
-      "balance": 5
+      "balance": 4
     },
     {
       "id": "1803",
@@ -26,6 +26,15 @@
       "pin": null,
       "TFA": false,
       "balance": 0
+    },
+    {
+      "id": "f937",
+      "userID": "yashraj",
+      "walletAddress": "3PRuHR9PuaMjWCN9YOPhWm1QUgS4PHxH",
+      "password": "yashraj12",
+      "pin": null,
+      "TFA": false,
+      "balance": 1
     }
   ]
 }
