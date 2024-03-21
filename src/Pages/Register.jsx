@@ -9,6 +9,8 @@ function Register() {
     userID: "",
     walletAddress: "",
     password: "",
+    pin: null,
+    TFA: false,
     balance: 0,
   });
 
