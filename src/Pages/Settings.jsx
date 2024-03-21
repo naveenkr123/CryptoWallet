@@ -46,7 +46,7 @@ function Register() {
         } else {
           try {
             const response = await fetch(
-              `http://localhost:8000/users/${myContext.userData.id}`,
+              `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
               {
                 method: "PUT",
                 headers: {

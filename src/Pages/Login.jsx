@@ -19,7 +19,6 @@ function Login() {
   const navigate = useNavigate(); // Initialize useNavigate
 
   function authentication() {
-    debugger;
     console.log(typeof pin, typeof userRecord.pin);
     if (pin === userRecord.pin) {
       console.log("PIN matched!");
@@ -37,7 +36,7 @@ function Login() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/users?userID=${userID}`
+        `http://${myContext.serverIP}:8000/users?userID=${userID}`
       );
       const userData = await response.json();
       // console.log("log", userData[0]);

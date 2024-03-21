@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "./AppContext";
 
 function Register() {
+  const myContext = useContext(AppContext);
   const navigate = useNavigate();
   const [user, setUser] = useState({
     userID: "",
@@ -50,7 +53,7 @@ function Register() {
     } else {
       try {
         const response = await fetch(
-          `http://localhost:8000/users?userID=${userID}`
+          `http://${myContext.serverIP}:8000/users?userID=${userID}`
         );
         const contentLength = response.headers.get("Content-Length");
         if (parseInt(contentLength) !== 2) {
@@ -71,7 +74,7 @@ function Register() {
           };
 
           const createUserResponse = await fetch(
-            "http://localhost:8000/users",
+            "http://${myContext.serverIP}:8000/users",
             {
               method: "POST",
               headers: {

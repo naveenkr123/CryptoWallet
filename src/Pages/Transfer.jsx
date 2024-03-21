@@ -43,13 +43,13 @@ function Transfer() {
       try {
         // Fetch sender data
         const senderResponse = await fetch(
-          `http://localhost:8000/users/${myContext.userData.id}`
+          `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`
         );
         const senderData = await senderResponse.json();
 
         // Fetch recipient data
         const recipientResponse = await fetch(
-          `http://localhost:8000/users?walletAddress=${wallet_address}`
+          `http://${myContext.serverIP}:8000/users?walletAddress=${wallet_address}`
         );
         const recipientData = await recipientResponse.json();
 
@@ -73,7 +73,7 @@ function Transfer() {
 
               // Update sender's balance
               const senderPutResponse = await fetch(
-                `http://localhost:8000/users/${myContext.userData.id}`,
+                `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
                 {
                   method: "PUT",
                   headers: {
@@ -88,7 +88,7 @@ function Transfer() {
 
               // Update recipient's balance
               const recipientPutResponse = await fetch(
-                `http://localhost:8000/users/${recipientData[0].id}`,
+                `http://${myContext.serverIP}:8000/users/${recipientData[0].id}`,
                 {
                   method: "PUT",
                   headers: {
