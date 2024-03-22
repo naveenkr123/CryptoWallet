@@ -145,7 +145,9 @@ function Login() {
                           <input
                             value={pin}
                             onChange={(e) => setPIN(parseInt(e.target.value))}
-                            type="number"
+                            type="password"
+                            pattern="[0-9]*"
+                            inputMode="numeric"
                             className="form-control"
                             id="loginPIN"
                             aria-describedby="emailHelp"

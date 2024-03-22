@@ -8,6 +8,13 @@ import { AppContext } from "./AppContext";
 function Register() {
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
+  const [userIDinput, setUserIDinput] = useState("");
+  const [passwordinput, setPasswordinput] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [accSuccess, setAccSuccess] = useState(false);
+  const [passError, setPassError] = useState(false);
+  const [idExist, setIDexist] = useState(false);
+  const [validationError, setValidationError] = useState(false);
   const [user, setUser] = useState({
     userID: "",
     walletAddress: "",
@@ -16,17 +23,6 @@ function Register() {
     TFA: false,
     balance: 0,
   });
-
-  function validation() {
-    if (
-      document.getElementById("passwordinput").value.length < 6 ||
-      document.getElementById("passRepeatinput").value.length < 6
-    ) {
-      document.getElementById("pass-validate").style.display = "block";
-    } else {
-      document.getElementById("pass-validate").style.display = "none";
-    }
-  }
 
   function generateRandomString() {
     const characters =
@@ -43,68 +39,73 @@ function Register() {
 
   async function setData(event) {
     event.preventDefault();
-    var userID = document.getElementById("userIDinput").value;
-    var password = document.getElementById("passwordinput").value;
-    var repeatPass = document.getElementById("passRepeatinput").value;
 
-    if (password !== repeatPass) {
-      console.log("Password Not Match");
-      document.getElementById("pass-error").style.display = "block";
+    // clear all previous error msg
+    setIDexist(false);
+    setValidationError(false);
+    setPassError(false);
+
+    // first check validation
+    if (passwordinput.length < 6 || repeatPassword.length < 6) {
+      setValidationError(true);
     } else {
-      try {
-        const response = await fetch(
-          `http://${myContext.serverIP}:8000/users?userID=${userID}`
-        );
-        const contentLength = response.headers.get("Content-Length");
-        if (parseInt(contentLength) !== 2) {
-          console.log("User ID already exists");
-          document.getElementById("id_exist").style.display = "block";
-          // Display appropriate error message
-          // For example:
-          // document.getElementById("userID-error").style.display = "block";
-        } else {
-          // User ID is available, proceed with registration
-          const walletAddress = generateRandomString();
-          console.log(walletAddress);
-          const updatedUser = {
-            ...user,
-            userID: userID,
-            password: password,
-            walletAddress: walletAddress,
-          };
-
-          const createUserResponse = await fetch(
-            `http://${myContext.serverIP}:8000/users`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(updatedUser),
-            }
+      setValidationError(false);
+      if (passwordinput !== repeatPassword) {
+        console.log("Password Not Match");
+        setPassError(true);
+      } else {
+        try {
+          const response = await fetch(
+            `http://${myContext.serverIP}:8000/users?userID=${userIDinput}`
           );
-
-          if (createUserResponse.ok) {
-            console.log("Account created successfully!");
-            setUser(updatedUser);
-            document.getElementById("pass-error").style.display = "none";
-            document.getElementById("id_exist").style.display = "none";
-            document.getElementById("acc-success").style.display = "block";
-            setTimeout(() => {
-              navigate("/login");
-              window.location.reload();
-            }, 2000);
+          const contentLength = response.headers.get("Content-Length");
+          if (parseInt(contentLength) !== 2) {
+            console.log("User ID already exists");
+            setIDexist(true);
           } else {
-            console.error(
-              "Error creating account:",
-              createUserResponse.statusText
+            // User ID is available, proceed with registration
+            const walletAddress = generateRandomString();
+            console.log(walletAddress);
+            const updatedUser = {
+              ...user,
+              userID: userIDinput,
+              password: passwordinput,
+              walletAddress: repeatPassword,
+            };
+
+            const createUserResponse = await fetch(
+              `http://${myContext.serverIP}:8000/users`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedUser),
+              }
             );
-            // Display appropriate error message
+
+            if (createUserResponse.ok) {
+              console.log("Account created successfully!");
+              setUser(updatedUser);
+              setPassError(false);
+              setIDexist(false);
+              setAccSuccess(true);
+              setTimeout(() => {
+                navigate("/login");
+                window.location.reload();
+              }, 2000);
+            } else {
+              console.error(
+                "Error creating account:",
+                createUserResponse.statusText
+              );
+              // Display appropriate error message
+            }
           }
+        } catch (error) {
+          console.error("Error:", error);
+          // Handle error
         }
-      } catch (error) {
-        console.error("Error:", error);
-        // Handle error
       }
     }
   }
@@ -122,8 +123,9 @@ function Register() {
                 Create new account
               </h5>
               <div
-                className="alert alert-success"
-                id="acc-success"
+                className={`alert alert-success ${
+                  accSuccess ? "d-block" : "d-none"
+                }`}
                 role="alert"
               >
                 Account created successfully!
@@ -134,26 +136,33 @@ function Register() {
                     <div className="mb-2">
                       <p className="fs-6 fw-medium my-2 ms-1">Create User ID</p>
                       <input
-                        id="userIDinput"
-                        name="userID"
                         type="text"
+                        value={userIDinput}
+                        onChange={(e) => {
+                          setUserIDinput(e.target.value);
+                        }}
                         className="form-control"
-                        placeholder=""
                         required
                       />
-                      <p id="id_exist">User ID already exists!</p>
+                      <p
+                        className={`text-danger ${
+                          idExist ? "d-block" : "d-none"
+                        }`}
+                      >
+                        User ID already exists!
+                      </p>
                     </div>
                   </Col>
                   <Col lg="6">
                     <div className="mb-2">
                       <p className="fs-6 fw-medium my-2 ms-1">Password</p>
                       <input
-                        id="passwordinput"
-                        name="password"
                         type="text"
                         className="form-control"
-                        placeholder=""
-                        onChange={validation}
+                        value={passwordinput}
+                        onChange={(e) => {
+                          setPasswordinput(e.target.value);
+                        }}
                         required
                       />
                     </div>
@@ -164,19 +173,27 @@ function Register() {
                         Repeat Password
                       </p>
                       <input
-                        id="passRepeatinput"
-                        name="repeatPass"
                         type="text"
                         className="form-control"
-                        placeholder=""
-                        onChange={validation}
+                        value={repeatPassword}
+                        onChange={(e) => setRepeatPassword(e.target.value)}
                         required
                       />
                     </div>
                   </Col>
                 </Row>
-                <p id="pass-validate">Password must be atleast 6 characters.</p>
-                <p id="pass-error">Password doesn't match!</p>
+                <p
+                  className={`text-danger ${
+                    validationError ? "d-block" : "d-none"
+                  }`}
+                >
+                  Password must be atleast 6 characters.
+                </p>
+                <p
+                  className={`text-danger ${passError ? "d-block" : "d-none"}`}
+                >
+                  Password doesn't match!
+                </p>
                 <button
                   type="submit"
                   className="blue-btn rounded w-100 mt-4 py-2 px-3"

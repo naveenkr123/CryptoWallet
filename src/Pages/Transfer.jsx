@@ -7,12 +7,16 @@ import { AppContext } from "./AppContext";
 
 function Transfer() {
   const [wallet_address, setWallet_address] = useState("");
+  const [sameWA, setSameWA] = useState(false);
+  const [errorWA, setErrorWA] = useState(false);
+  const [invalidError, setInvalidError] = useState(false);
+  const [balanceError, setBalanceError] = useState(false);
+  const [transferMSG, setTransferMSG] = useState(false);
   const [amount, setAmount] = useState("");
 
   const myContext = useContext(AppContext);
   const navigate = useNavigate(); // Initialize useNavigate
   const userData = myContext.userData;
-
   // console.log("context", myContext);
 
   // Redirect to login if userData is not available
@@ -31,14 +35,14 @@ function Transfer() {
     event.preventDefault();
 
     // clear all previous error messages
-    document.getElementById("WA-same").style.display = "none";
-    document.getElementById("WA-error").style.display = "none";
-    document.getElementById("zero-error").style.display = "none";
-    document.getElementById("balance_error").style.display = "none";
-    document.getElementById("transfer-success").style.display = "none";
+    setSameWA(false);
+    setErrorWA(false);
+    setInvalidError(false);
+    setBalanceError(false);
+    setTransferMSG(false);
 
     if (userData.walletAddress === wallet_address) {
-      document.getElementById("WA-same").style.display = "block";
+      setSameWA(true);
     } else {
       try {
         // Fetch sender data
@@ -55,17 +59,17 @@ function Transfer() {
 
         if (recipientData.length === 0) {
           // Wallet address not found error!
-          document.getElementById("WA-error").style.display = "block";
+          setErrorWA(true);
         } else {
           if (isNaN(amount) || amount <= 0) {
             // Invalid amount error
-            document.getElementById("zero-error").style.display = "block";
+            setInvalidError(true);
           } else {
             // Check sender's balance
             if (amount > senderData.balance) {
               // Insufficient balance error
               console.log(senderData.balance);
-              document.getElementById("balance_error").style.display = "block";
+              setBalanceError(true);
             } else {
               // Calculate updated balances
               const senderUpdatedBalance = senderData.balance - amount;
@@ -104,8 +108,7 @@ function Transfer() {
               if (senderPutResponse.ok && recipientPutResponse.ok) {
                 // Transfer successful msg
 
-                document.getElementById("transfer-success").style.display =
-                  "block";
+                setTransferMSG(true);
               } else {
                 // Handle errors
               }
@@ -145,20 +148,18 @@ function Transfer() {
                       aria-describedby="emailHelp"
                       placeholder=""
                     />
-                    <div
-                      className="alert alert-danger mt-2 mb-4"
-                      id="WA-same"
-                      role="alert"
+                    <p
+                      className={`text-danger ${sameWA ? "d-block" : "d-none"}`}
                     >
                       Can't enter same wallet address!
-                    </div>
-                    <div
-                      className="alert alert-danger mt-2 mb-4"
-                      id="WA-error"
-                      role="alert"
+                    </p>
+                    <p
+                      className={`text-danger ${
+                        errorWA ? "d-block" : "d-none"
+                      }`}
                     >
                       Wallet address not found!
-                    </div>
+                    </p>
                   </div>
                   <div className="mb-4">
                     <p className="fs-6 fw-medium my-2 ms-1">BTC Amount</p>
@@ -174,14 +175,20 @@ function Transfer() {
                       placeholder=""
                       inputMode="numeric"
                     />
-                    <div
-                      className="alert alert-danger my-4"
-                      id="balance_error"
-                      role="alert"
+                    <p
+                      className={`text-danger ${
+                        invalidError ? "d-block" : "d-none"
+                      }`}
+                    >
+                      Invalid amount!
+                    </p>
+                    <p
+                      className={`text-danger ${
+                        balanceError ? "d-block" : "d-none"
+                      }`}
                     >
                       Insufficient balance!
-                    </div>
-                    <p id="zero-error">Invalid amount!</p>
+                    </p>
                   </div>
                   <button
                     type="submit"
@@ -192,8 +199,9 @@ function Transfer() {
                 </form>
 
                 <div
-                  id="transfer-success"
-                  className="alert alert-success my-4"
+                  className={`alert alert-success my-4 ${
+                    transferMSG ? "d-block" : "d-none"
+                  }`}
                   role="alert"
                 >
                   Transferred Successfully!
