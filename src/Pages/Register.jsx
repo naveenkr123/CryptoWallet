@@ -26,7 +26,7 @@ function Register() {
     password: "",
     pin: null,
     TFA: false,
-    balance: 0,
+    balance: 5,
   });
 
   function handleCheckboxChange() {
