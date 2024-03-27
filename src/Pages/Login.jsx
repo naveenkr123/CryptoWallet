@@ -18,11 +18,10 @@ function Login() {
   const myContext = useContext(AppContext);
   const navigate = useNavigate(); // Initialize useNavigate
 
-  function authentication() {
-    console.log(typeof pin, typeof userRecord.pin);
+  function authentication(event) {
+    event.preventDefault();
+
     if (pin === userRecord.pin) {
-      console.log("PIN matched!");
-      // PIN matches
       myContext.setLoginStatus(true);
       myContext.setUserData(userRecord);
       navigate("/account"); // Navigate to Account page
@@ -150,12 +149,10 @@ function Login() {
                             inputMode="numeric"
                             className="form-control"
                             id="loginPIN"
-                            aria-describedby="emailHelp"
-                            placeholder=""
                             required
                           />
                           <p
-                            className={`text-danger ${
+                            className={`text-danger m-0 ${
                               authError ? "d-block" : "d-none"
                             }`}
                           >

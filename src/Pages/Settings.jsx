@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Wrapper from "../Components/Wrapper";
-import { Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { AppContext } from "./AppContext";
 
@@ -8,14 +8,22 @@ function Register() {
   const [currentPass, setCurrentPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
+  const [pinInput, setPinInput] = useState("");
+  const [repeatPIN, setRepeatPIN] = useState("");
+  const [pinError, setPinError] = useState(false);
+  const [pinValidation, setPinValidation] = useState(false);
   const [passError, setPassError] = useState(false);
   const [correctPassError, setCorrectPassError] = useState(false);
   const [validationError, setValidationError] = useState(false);
   const [failedError, setFailedError] = useState(false);
   const [passChange, setPassChange] = useState(false);
+  const [pinChange, setPinChange] = useState(false);
+  const [deletionConfirm, setDeletionConfirm] = useState("");
+  const [deletionError, setDeletionError] = useState(false);
+  const [accountDeleted, setAccountDeleted] = useState(false);
 
   const myContext = useContext(AppContext);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const userData = myContext.userData;
   // console.log("context", myContext);
 
@@ -57,6 +65,9 @@ function Register() {
             );
             if (response.ok) {
               setPassChange(true);
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000);
             } else {
               setFailedError(true);
             }
@@ -72,6 +83,69 @@ function Register() {
     }
   }
 
+  async function changePIN(event) {
+    event.preventDefault();
+
+    setPinError(false);
+    setPinValidation(false);
+
+    console.log(pinInput, repeatPIN);
+
+    if (pinInput.toString().length !== 4 || repeatPIN.toString().length !== 4) {
+      setPinValidation(true);
+    } else {
+      if (pinInput !== repeatPIN) {
+        setPinError(true);
+      } else {
+        console.log("done!");
+        try {
+          const response = await fetch(
+            `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ ...userData, pin: pinInput, TFA: true }),
+            }
+          );
+
+          if (response.ok) {
+            setPinChange(true);
+          } else {
+            setFailedError(true);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+  }
+
+  function deleteAccount() {
+    if (deletionConfirm === userData.userID) {
+      fetch(
+        `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
+        {
+          method: "DELETE",
+        }
+      )
+        .then((response) => {
+          if (!response.ok) {
+            setFailedError(true);
+            throw new Error("Failed to delete the record");
+          }
+          setAccountDeleted(true);
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+        })
+        .catch((error) => console.error(error));
+    } else {
+      setDeletionError(true);
+    }
+  }
+
   return (
     <Wrapper>
       <section>
@@ -80,8 +154,10 @@ function Register() {
             <h4 className="mb-3">Account Settings</h4>
             <hr />
 
-            <div className=" my-4">
-              <h5 className="fw-semibold mb-3">Change password:</h5>
+            <div className=" mb-5">
+              <h6 className="fw-semibold mb-2">
+                Change your account password:
+              </h6>
               <div className="col-lg-6">
                 <form onSubmit={changePassword}>
                   <div className="mb-3">
@@ -129,20 +205,15 @@ function Register() {
                     >
                       Password must be atleast 6 characters.
                     </p>
+                    <p
+                      className={`text-danger ${
+                        passError ? "d-block" : "d-none"
+                      }`}
+                    >
+                      Enter same password in both fields.
+                    </p>
                   </div>
-                  <div
-                    className={`alert alert-danger ${
-                      passError ? "d-block" : "d-none"
-                    }`}
-                    id="change-pass"
-                    role="alert"
-                  >
-                    Enter same password in both fields.
-                  </div>
-                  <button
-                    type="submit"
-                    className="blue-btn rounded py-1 px-2 mb-3"
-                  >
+                  <button type="submit" className="blue-btn rounded py-1 px-2">
                     Update
                   </button>
                 </form>
@@ -165,40 +236,140 @@ function Register() {
               </div>
             </div>
 
-            <div>
-              <h5 className="fw-semibold mb-3">
-                Add a transaction PIN for additional security:
-              </h5>
+            <div className="mb-5">
+              <h6 className="fw-semibold mb-2">
+                Add/Update a 2FA PIN for additional security:
+              </h6>
               <div className="col-lg-6">
-                <div className="mb-3">
-                  <p className="fs-6 fw-medium my-2 ms-1">PIN (4 digits)</p>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder=""
-                  />
+                <form onSubmit={changePIN}>
+                  <Row>
+                    <Col lg="6">
+                      <div className="mb-3">
+                        <p className="fs-6 fw-medium my-2 ms-1">
+                          PIN (4 digits)
+                        </p>
+                        <input
+                          type="number"
+                          pattern="[0-9]*"
+                          inputMode="numeric"
+                          className="form-control"
+                          value={pinInput}
+                          onChange={(e) =>
+                            setPinInput(parseInt(e.target.value))
+                          }
+                        />
+                      </div>
+                    </Col>
+                    <Col lg="6">
+                      <div className="mb-3">
+                        <p className="fs-6 fw-medium my-2 ms-1">Repeat PIN</p>
+                        <input
+                          type="number"
+                          pattern="[0-9]*"
+                          inputMode="numeric"
+                          className="form-control"
+                          value={repeatPIN}
+                          onChange={(e) =>
+                            setRepeatPIN(parseInt(e.target.value))
+                          }
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                  <p
+                    className={`text-danger ${
+                      pinValidation ? "d-block" : "d-none"
+                    }`}
+                  >
+                    PIN must be 4-digits only!
+                  </p>
+                  <p
+                    className={`text-danger ${pinError ? "d-block" : "d-none"}`}
+                  >
+                    PIN doesn't match!
+                  </p>
+                  <button type="submit" className="blue-btn rounded py-1 px-2">
+                    Save
+                  </button>
+                </form>
+                <div
+                  className={`alert alert-success mt-3 ${
+                    pinChange ? "d-block" : "d-none"
+                  }`}
+                  role="alert"
+                >
+                  PIN Changed!
                 </div>
-                <div className="mb-3">
-                  <p className="fs-6 fw-medium my-2 ms-1">Repeat PIN</p>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder=""
-                  />
+                <div
+                  className={`alert alert-danger mt-3 ${
+                    failedError ? "d-block" : "d-none"
+                  }`}
+                  role="alert"
+                >
+                  An error occurred. Please try again later.
                 </div>
-                <button className="blue-btn rounded py-1 px-2 mb-5">
-                  Save
+              </div>
+            </div>
+
+            <div className="card col-lg-6 mb-4">
+              <div className="card-header">
+                <h6 className="fw-semibold text-danger mb-0 text-center">
+                  Delete your account
+                </h6>
+              </div>
+              <div className="card-body">
+                <p className="fw-medium ms-1 mb-2">
+                  To confirm, type "{userData.userID}" in the box below
+                </p>
+                <input
+                  type="text"
+                  value={deletionConfirm}
+                  onChange={(e) => setDeletionConfirm(e.target.value)}
+                  className="form-control"
+                />
+                <p
+                  className={`text-danger m-0 ${
+                    deletionError ? "d-block" : "d-none"
+                  }`}
+                >
+                  Type given text correctly
+                </p>
+                <button
+                  onClick={deleteAccount}
+                  className="btn btn-danger my-3 fw-medium w-100"
+                >
+                  Delete
                 </button>
+                <div
+                  className={`alert alert-success ${
+                    accountDeleted ? "d-block" : "d-none"
+                  }`}
+                  role="alert"
+                >
+                  Account deleted successfully!
+                  <br />
+                  You will be logged out with 5 seconds...
+                </div>
+                <div
+                  className={`alert alert-danger ${
+                    failedError ? "d-block" : "d-none"
+                  }`}
+                  role="alert"
+                >
+                  An error occurred. Please try again later.
+                </div>
               </div>
             </div>
 
             <div className="alert alert-info" role="alert">
               You will have to enter the PIN each time you are sending
               CryptoCoins.
+            </div>
+
+            <div className="alert alert-danger" role="alert">
+              Warning! All CryptoCoins currently held in your wallet will
+              automatically transfer to the admin if you choose to delete your
+              account.
             </div>
 
             <div className="alert alert-warning" role="alert">
