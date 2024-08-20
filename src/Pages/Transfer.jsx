@@ -15,7 +15,7 @@ function Transfer() {
   const [amount, setAmount] = useState("");
 
   const myContext = useContext(AppContext);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const userData = myContext.userData;
   // console.log("context", myContext);
 
@@ -34,91 +34,104 @@ function Transfer() {
   async function transferBTC(event) {
     event.preventDefault();
 
-    // clear all previous error messages
+    // Disable form submission button to prevent multiple submissions
+    setTransferMSG(false);
     setSameWA(false);
     setErrorWA(false);
     setInvalidError(false);
     setBalanceError(false);
-    setTransferMSG(false);
 
     if (userData.walletAddress === wallet_address) {
       setSameWA(true);
-    } else {
-      try {
-        // Fetch sender data
-        const senderResponse = await fetch(
+      return;
+    }
+
+    try {
+      // Fetch sender and recipient data concurrently
+      const [senderResponse, recipientResponse] = await Promise.all([
+        fetch(
           `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`
-        );
-        const senderData = await senderResponse.json();
-
-        // Fetch recipient data
-        const recipientResponse = await fetch(
+        ),
+        fetch(
           `http://${myContext.serverIP}:8000/users?walletAddress=${wallet_address}`
-        );
-        const recipientData = await recipientResponse.json();
+        ),
+      ]);
 
-        if (recipientData.length === 0) {
-          // Wallet address not found error!
-          setErrorWA(true);
-        } else {
-          if (isNaN(amount) || amount <= 0) {
-            // Invalid amount error
-            setInvalidError(true);
-          } else {
-            // Check sender's balance
-            if (amount > senderData.balance) {
-              // Insufficient balance error
-              console.log(senderData.balance);
-              setBalanceError(true);
-            } else {
-              // Calculate updated balances
-              const senderUpdatedBalance = senderData.balance - amount;
-              const recipientUpdatedBalance = recipientData[0].balance + amount;
+      const senderData = await senderResponse.json();
+      const recipientData = await recipientResponse.json();
 
-              // Update sender's balance
-              const senderPutResponse = await fetch(
-                `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
-                {
-                  method: "PUT",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    ...senderData,
-                    balance: senderUpdatedBalance,
-                  }),
-                }
-              );
-
-              // Update recipient's balance
-              const recipientPutResponse = await fetch(
-                `http://${myContext.serverIP}:8000/users/${recipientData[0].id}`,
-                {
-                  method: "PUT",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    ...recipientData[0],
-                    balance: recipientUpdatedBalance,
-                  }),
-                }
-              );
-
-              if (senderPutResponse.ok && recipientPutResponse.ok) {
-                // Transfer successful msg
-
-                setTransferMSG(true);
-              } else {
-                // Handle errors
-              }
-            }
-          }
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        // Handle error
+      if (recipientData.length === 0) {
+        setErrorWA(true); // Wallet address not found error!
+        return;
       }
+
+      if (isNaN(amount) || amount <= 0) {
+        setInvalidError(true); // Invalid amount error
+        return;
+      }
+
+      if (amount > senderData.balance) {
+        setBalanceError(true); // Insufficient balance error
+        return;
+      }
+
+      // Calculate updated balances
+      const senderUpdatedBalance = senderData.balance - amount;
+      const recipientUpdatedBalance = recipientData[0].balance + amount;
+
+      // Perform debit and credit operations concurrently
+      const [senderPutResponse, recipientPutResponse] = await Promise.all([
+        fetch(
+          `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...senderData,
+              balance: senderUpdatedBalance,
+            }),
+          }
+        ),
+        fetch(
+          `http://${myContext.serverIP}:8000/users/${recipientData[0].id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...recipientData[0],
+              balance: recipientUpdatedBalance,
+            }),
+          }
+        ),
+      ]);
+
+      if (senderPutResponse.ok && recipientPutResponse.ok) {
+        setTransferMSG(true); // Transfer successful
+      } else {
+        // Handle partial failure and revert the operation if necessary
+        console.error("Error: Transfer failed, reverting...");
+        await fetch(
+          `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...senderData,
+              balance: senderData.balance, // Revert to original balance
+            }),
+          }
+        );
+        setBalanceError(true);
+      }
+    } catch (error) {
+      console.error("Transfer Error:", error);
+      setBalanceError(true);
     }
   }
 
@@ -151,7 +164,7 @@ function Transfer() {
                     <p
                       className={`text-danger ${sameWA ? "d-block" : "d-none"}`}
                     >
-                      Can't enter same wallet address!
+                      Can't enter the same wallet address!
                     </p>
                     <p
                       className={`text-danger ${
