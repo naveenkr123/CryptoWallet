@@ -1,7 +1,7 @@
 import React from "react";
 import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row, Accordion } from "react-bootstrap";
-import banner from "../images/banner.svg";
+import banner from "../assets/images/banner.svg";
 import { Link } from "react-router-dom";
 
 function Home() {

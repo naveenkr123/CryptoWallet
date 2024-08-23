@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import login from "../images/login.svg";
+import login from "../assets/images/login.svg";
 import { useContext } from "react";
 import { AppContext } from "./AppContext";
 
@@ -24,7 +24,7 @@ function Login() {
     if (pin === userRecord.pin) {
       myContext.setLoginStatus(true);
       myContext.setUserData(userRecord);
-      navigate("/account"); // Navigate to Account page
+      navigate("/wallet"); // Navigate to wallet page
     } else {
       setAuthError(true);
     }

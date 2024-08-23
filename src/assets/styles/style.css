@@ -1,0 +1,260 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+:root {
+  --primaryColor: #113b6c;
+  --secondaryColor: #00417e;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -webkit-appearance: unset;
+          appearance: unset;
+  -moz-appearance: textfield;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: black;
+}
+
+.sub-head {
+  color: rgb(101, 101, 101);
+}
+
+.blue-btn {
+  background-color: #003a70;
+  color: white;
+  border: 0;
+  border-radius: 50px;
+  padding: 7px 30px;
+  font-weight: 500;
+}
+
+.blue-btn:hover {
+  background-color: var(--primaryColor);
+}
+
+.bg-body-tertiary {
+  background-color: transparent !important;
+}
+
+.accordion-button {
+  font-weight: 500 !important;
+}
+
+/* Navbar */
+.navbar-toggler {
+  border: 0;
+}
+
+.navbar-brand {
+  margin: 0;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+  color: black;
+  font-weight: 500;
+  border-radius: 50px;
+  padding: 7px 15px;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link:hover {
+  background-color: rgb(244, 244, 244);
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.dropdown-menu {
+  padding: 0;
+  overflow: hidden;
+}
+
+.dropdown-divider {
+  margin: 0;
+}
+
+.dropdown-item {
+  padding: 7px 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: var(--secondaryColor);
+}
+
+.alert {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+.alert ul {
+  margin: 0;
+}
+
+.nav-btn-cont {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#loggedin-nav {
+  display: none;
+}
+
+.nCard {
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+/* Footer */
+footer {
+  background-color: var(--primaryColor);
+}
+
+footer .nav {
+  border-color: #00417e !important;
+}
+
+footer .nav .nav-item .nav-link,
+footer p {
+  color: white !important;
+}
+
+/* Login page */
+.form-control {
+  border: 1px solid rgb(185, 185, 185) !important;
+}
+
+.copy-btn {
+  font-size: smaller;
+  top: 5px;
+  right: 5px;
+}
+
+.copy-btn:hover,
+.login-btn:hover {
+  border-color: rgb(198, 198, 198) !important;
+}
+
+#id_exist,
+#pass-validate,
+#pass-error,
+#zero-error {
+  display: none;
+  color: red;
+  margin: 0;
+}
+
+#acc-success,
+#balance_error,
+#WA-error,
+#transfer-success,
+#WA-same,
+#change-pass {
+  display: none;
+}
+
+/* Notification */
+.dropdown-menu {
+  border: 0;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: rgba(0, 136, 255, 0.167);
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.red_btn {
+  border: 0;
+  padding: 0.3rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: rgb(255, 0, 60);
+  color: white;
+}
+.red_btn:hover {
+  background-color: rgb(244, 2, 54);
+}
+
+.notification {
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.notification:hover {
+  background-color: rgb(233, 241, 255);
+}
+.notification h6 {
+  margin: 0;
+}
+.notification span {
+  font-size: 0.85rem;
+  color: gray;
+}
+.notification p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgb(71, 71, 71);
+}
+.notification .bell {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  background-color: rgb(225, 241, 255);
+  padding: 0.3rem;
+  border-radius: 50px;
+  margin-right: 1rem;
+}
+.notification .bell img {
+  width: 100%;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.nCard table th {
+  background: #000;
+}
+
+@media (max-width: 992px) {
+  .blue-btn {
+    text-align: center;
+  }
+  .nav-link {
+    text-align: center;
+  }
+  .nav-btn-cont {
+    flex-direction: column;
+  }
+}
+@media (max-width: 768px) {
+  .hero-sec {
+    flex-direction: column-reverse;
+  }
+  .blue-btn {
+    width: 100%;
+  }
+}/*# sourceMappingURL=style.css.map */

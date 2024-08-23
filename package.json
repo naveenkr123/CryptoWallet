@@ -17,6 +17,7 @@
     "react-router": "^6.22.0",
     "react-router-dom": "^6.22.0",
     "react-scripts": "5.0.1",
+    "sass": "^1.77.8",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -24,7 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve-json": "json-server --watch db.json --host 13.48.18.172 --port 8000"
+    "serve-json": "json-server --watch db.json --host 10.5.50.209 --port 8000"
   },
   "eslintConfig": {
     "extends": [

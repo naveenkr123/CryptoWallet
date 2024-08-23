@@ -17,7 +17,7 @@ function Header() {
       <Navbar
         expand="lg"
         id="default-nav"
-        className={`bg-body-tertiary py-3 ${
+        className={`bg-body-tertiary py-2 border ${
           myContext.loginStatus ? "d-none" : "d-block"
         }`}
       >
@@ -46,7 +46,7 @@ function Header() {
       <Navbar
         expand="lg"
         id="loggedin-nav"
-        className={`bg-body-tertiary py-3 ${
+        className={`bg-body-tertiary border-bottom py-2 ${
           myContext.loginStatus ? "d-block" : "d-none"
         }`}
       >
@@ -56,12 +56,15 @@ function Header() {
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto text-center">
-              <NavLink className="nav-link" to="/account">
+            <Nav className="mx-auto text-center">
+              <NavLink className="nav-link" to="/wallet">
                 Wallet
               </NavLink>
               <NavLink className="nav-link" to="/transfer">
                 Transfer
+              </NavLink>
+              <NavLink className="nav-link" to="/transactions">
+                Transactions
               </NavLink>
               <NavLink className="nav-link" to="/notifications">
                 Notifications( 2 )
@@ -69,16 +72,15 @@ function Header() {
               <NavLink className="nav-link" to="/settings">
                 Settings
               </NavLink>
-              <NavLink className="nav-link" to="/faq">
-                FAQ
-              </NavLink>
+            </Nav>
+            <div className="d-flex">
               <button
-                className="border-0 bg-white text-danger fw-semibold ps-md-3 py-md-2"
+                className="red_btn fw-medium py-1 px-4 rounded-pill mx-auto mx-lg-0"
                 onClick={handleReloadClick}
               >
                 Log Out
               </button>
-            </Nav>
+            </div>
           </Navbar.Collapse>
         </Container>
       </Navbar>

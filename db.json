@@ -7,43 +7,53 @@
       "password": "abc123",
       "pin": 1803,
       "TFA": true,
-      "balance": 5
-    },
-    {
-      "id": "0b21",
-      "userID": "shizuka",
-      "walletAddress": "qu0AxqAnbZZKpHWaj3orxbDlpr5dBHKb",
-      "password": "abcs123",
-      "pin": null,
-      "TFA": false,
-      "balance": 0
-    },
-    {
-      "id": "1803",
-      "userID": "sunio777",
-      "walletAddress": "mS37HgN8XN7xSVjOVqyhPL8YhjP995Sk",
-      "password": "abc123",
-      "pin": null,
-      "TFA": false,
-      "balance": 0
-    },
-    {
-      "id": "f937",
-      "userID": "yashraj",
-      "walletAddress": "3PRuHR9PuaMjWCN9YOPhWm1QUgS4PHxH",
-      "password": "yashraj12",
-      "pin": null,
-      "TFA": false,
-      "balance": 0
-    },
-    {
-      "id": "8779",
-      "userID": "kazama",
-      "walletAddress": "abc123",
-      "password": "abc123",
-      "pin": null,
-      "TFA": false,
-      "balance": 0
+      "balance": 5,
+      "transactions": [
+        {
+          "transactionID": "T79874239472487209",
+          "senderUID": "naveen123",
+          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "recipientUID": "sonu",
+          "recipientWA": "yA28EtU4OAOsrDp1IKjXwlSPYOvLKEWk",
+          "date": "12 Dec 2024",
+          "amount": "0.15556",
+          "type": "debit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T79874239472487209",
+          "senderUID": "sonu",
+          "senderWA": "yA28EtU4OAOsrDp1IKjXwlSPYOvLKEWk",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "12 Dec 2024",
+          "amount": "0.15556",
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T79874239472487209",
+          "senderUID": "naveen123",
+          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "recipientUID": "sonu",
+          "recipientWA": "yA28EtU4OAOsrDp1IKjXwlSPYOvLKEWk",
+          "date": "12 Dec 2024",
+          "amount": "0.15556",
+          "type": "debit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T79874239472487209",
+          "senderUID": "sonu",
+          "senderWA": "yA28EtU4OAOsrDp1IKjXwlSPYOvLKEWk",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "12 Dec 2024",
+          "amount": "0.15556",
+          "type": "credit",
+          "status": "success"
+        }
+      ]
     }
   ]
 }

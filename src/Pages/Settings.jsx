@@ -150,15 +150,14 @@ function Register() {
     <Wrapper>
       <section>
         <Container>
-          <div className="col-lg-10 border border-2 rounded p-3 p-md-4 my-5 mx-auto">
-            <h4 className="mb-3">Account Settings</h4>
-            <hr />
+          <div className="col-lg-8 nCard my-4 mx-auto">
+            <h4 className="mb-4">Account Settings</h4>
 
-            <div className=" mb-5">
-              <h6 className="fw-semibold mb-2">
-                Change your account password:
-              </h6>
+            <div className="border p-4 rounded-3">
               <div className="col-lg-6">
+                <h6 className="fw-semibold mb-2">
+                  Change your account password:
+                </h6>
                 <form onSubmit={changePassword}>
                   <div className="mb-3">
                     <p className="fs-6 fw-medium my-2 ms-1">Current password</p>
@@ -236,7 +235,7 @@ function Register() {
               </div>
             </div>
 
-            <div className="mb-5">
+            <div className="my-4 border p-4 rounded-3">
               <h6 className="fw-semibold mb-2">
                 Add/Update a 2FA PIN for additional security:
               </h6>
@@ -311,16 +310,15 @@ function Register() {
               </div>
             </div>
 
-            <div className="card col-lg-6 mb-4">
-              <div className="card-header">
-                <h6 className="fw-semibold text-danger mb-0 text-center">
-                  Delete your account
+            <div className="border p-4 rounded-3 mb-4">
+              <div className="col-lg-6">
+                <h6 className="fw-semibold text-danger">
+                  Delete your account:
                 </h6>
-              </div>
-              <div className="card-body">
                 <p className="fw-medium ms-1 mb-2">
                   To confirm, type "{userData.userID}" in the box below
                 </p>
+
                 <input
                   type="text"
                   value={deletionConfirm}
@@ -336,7 +334,7 @@ function Register() {
                 </p>
                 <button
                   onClick={deleteAccount}
-                  className="btn btn-danger my-3 fw-medium w-100"
+                  className="red_btn my-3 fw-medium w-100"
                 >
                   Delete
                 </button>
@@ -362,19 +360,21 @@ function Register() {
             </div>
 
             <div className="alert alert-info" role="alert">
-              You will have to enter the PIN each time you are sending
-              CryptoCoins.
-            </div>
-
-            <div className="alert alert-danger" role="alert">
-              Warning! All CryptoCoins currently held in your wallet will
-              automatically transfer to the admin if you choose to delete your
-              account.
-            </div>
-
-            <div className="alert alert-warning" role="alert">
-              Warning! Please note down account credentials because there is no
-              account recovery option due to security reasons.
+              <ul>
+                <li>
+                  You will have to enter the PIN each time you are sending
+                  CryptoCoins.
+                </li>
+                <li>
+                  All CryptoCoins currently held in your wallet will
+                  automatically transfer to the admin if you choose to delete
+                  your account.
+                </li>
+                <li>
+                  Please note down account credentials because there is no
+                  account recovery option due to security reasons.
+                </li>
+              </ul>
             </div>
           </div>
         </Container>

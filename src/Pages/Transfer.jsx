@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row } from "react-bootstrap";
-import tImg from "../images/transfer.svg";
+import tImg from "../assets/images/transfer.svg";
 import { useNavigate } from "react-router";
 import { AppContext } from "./AppContext";
 
@@ -141,7 +141,7 @@ function Transfer() {
         <Container>
           <Row>
             <Col lg="4">
-              <div className="login-div">
+              <div className="px-3 px-md-0">
                 <h2 className="text-center fw-bold">
                   Crypto<span style={{ color: "#072541" }}>Wallet</span>
                 </h2>
@@ -151,7 +151,7 @@ function Transfer() {
 
                 <form onSubmit={transferBTC}>
                   <div className="mb-3">
-                    <p className="fs-6 fw-medium my-2 ms-1">Wallet Address</p>
+                    <p className="fs-6 fw-medium my-1 ms-1">Wallet Address</p>
                     <input
                       type="text"
                       value={wallet_address}
@@ -159,7 +159,7 @@ function Transfer() {
                       className="form-control"
                       id="transferWA"
                       aria-describedby="emailHelp"
-                      placeholder=""
+                      placeholder="Enter wallet address"
                     />
                     <p
                       className={`text-danger ${sameWA ? "d-block" : "d-none"}`}
@@ -175,7 +175,7 @@ function Transfer() {
                     </p>
                   </div>
                   <div className="mb-4">
-                    <p className="fs-6 fw-medium my-2 ms-1">BTC Amount</p>
+                    <p className="fs-6 fw-medium my-1 ms-1">BTC Amount</p>
                     <input
                       type="number"
                       step="0.00001"
@@ -185,7 +185,7 @@ function Transfer() {
                       id="transferAmt"
                       className="form-control"
                       aria-describedby="emailHelp"
-                      placeholder=""
+                      placeholder="0.00"
                       inputMode="numeric"
                     />
                     <p
@@ -205,7 +205,7 @@ function Transfer() {
                   </div>
                   <button
                     type="submit"
-                    className="blue-btn rounded w-100 py-2 px-3"
+                    className="blue-btn rounded border-0 w-100 py-2 px-3"
                   >
                     Transfer
                   </button>
@@ -233,7 +233,7 @@ function Transfer() {
               </div>
             </Col>
             <Col lg="8">
-              <div className="p-5 d-none d-md-block">
+              <div className="px-5 d-none d-md-block">
                 <img src={tImg} className="img-fluid" alt="" />
               </div>
             </Col>
