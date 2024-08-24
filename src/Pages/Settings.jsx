@@ -150,10 +150,10 @@ function Register() {
     <Wrapper>
       <section>
         <Container>
-          <div className="col-lg-8 nCard my-4 mx-auto">
-            <h4 className="mb-4">Account Settings</h4>
+          <div className="col-lg-8 nCard p-3 my-4 mx-auto">
+            <h5 className="mb-4">Account Settings</h5>
 
-            <div className="border p-4 rounded-3">
+            <div className="border-top pt-3 mb-4">
               <div className="col-lg-6">
                 <h6 className="fw-semibold mb-2">
                   Change your account password:
@@ -235,7 +235,7 @@ function Register() {
               </div>
             </div>
 
-            <div className="my-4 border p-4 rounded-3">
+            <div className="border-top pt-3 mb-4">
               <h6 className="fw-semibold mb-2">
                 Add/Update a 2FA PIN for additional security:
               </h6>
@@ -310,7 +310,7 @@ function Register() {
               </div>
             </div>
 
-            <div className="border p-4 rounded-3 mb-4">
+            <div className="border-top pt-3 mb-4">
               <div className="col-lg-6">
                 <h6 className="fw-semibold text-danger">
                   Delete your account:

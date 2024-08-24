@@ -8,6 +8,7 @@
       "pin": 1803,
       "TFA": true,
       "balance": 5,
+      "isNotification": true,
       "transactions": [
         {
           "transactionID": "T79874239472487209",
@@ -52,6 +53,18 @@
           "amount": "0.15556",
           "type": "credit",
           "status": "success"
+        }
+      ],
+      "notifications": [
+        {
+          "subject": "Welcome to CryptoWallet",
+          "date": "12 Dec 2024",
+          "content": "hello naveen123, Welcome to CryptoWalet.\n Make sure you note down account credentials because there is no account recovery option due to security reasons."
+        },
+        {
+          "subject": "Security Alert",
+          "date": "13 Dec 2024",
+          "content": "hello naveen123,\n Ensure you enable the 2FA feature to enhance the security of your account. You will have to enter the PIN each time you are sending CryptoCoins and Login."
         }
       ]
     }

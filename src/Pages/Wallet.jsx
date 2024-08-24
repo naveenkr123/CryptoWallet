@@ -96,7 +96,7 @@ function Wallet() {
       <section>
         <Container>
           <div className="col-lg-6 nCard my-4 mx-auto">
-            <h4 className="mb-4 text-center">Wallet Balance</h4>
+            <h5 className="mb-4 text-center">Wallet Balance</h5>
             <h1 className="m-0 mt-1 text-center text-secondary me-4 mb-4">
               ₿ <span className="text-black">{balance}</span>
             </h1>
@@ -112,7 +112,7 @@ function Wallet() {
                   Transfer BTC
                 </button>
               </Link>
-              <Link to="/transfer">
+              <Link to="/transactions">
                 <button className="btn btn-dark bg-black btn-sm px-3 rounded-pill">
                   Transactions
                 </button>

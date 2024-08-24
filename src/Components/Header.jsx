@@ -66,8 +66,12 @@ function Header() {
               <NavLink className="nav-link" to="/transactions">
                 Transactions
               </NavLink>
-              <NavLink className="nav-link" to="/notifications">
-                Notifications( 2 )
+              <NavLink
+                className="nav-link notification_opt"
+                to="/notifications"
+              >
+                <span className="notify_dot"></span>
+                Notifications
               </NavLink>
               <NavLink className="nav-link" to="/settings">
                 Settings
@@ -75,7 +79,7 @@ function Header() {
             </Nav>
             <div className="d-flex">
               <button
-                className="red_btn fw-medium py-1 px-4 rounded-pill mx-auto mx-lg-0"
+                className="red_btn fw-medium py-1 px-3 rounded-pill"
                 onClick={handleReloadClick}
               >
                 Log Out

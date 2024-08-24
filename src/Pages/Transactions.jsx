@@ -56,7 +56,7 @@ function Transactions() {
                   class="form-control rounded-end-0"
                   placeholder="Search with Txn ID"
                 />
-                <button className="btn btn-primary rounded-start-0">
+                <button className="btn btn-dark bg-black rounded-start-0">
                   Search
                 </button>
               </div>

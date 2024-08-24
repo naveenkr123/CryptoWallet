@@ -194,7 +194,7 @@ function Register() {
     <Wrapper>
       <section>
         <Container>
-          <div className="w-100 h-100 py-5 p-md-5">
+          <div className="w-100 h-100 py-5 px-4 p-md-5">
             <div className="col-lg-6 login-div mx-auto pb-5">
               <h2 className="text-center fw-bold">
                 Crypto<span style={{ color: "#072541" }}>Wallet</span>
@@ -214,7 +214,7 @@ function Register() {
                 <Row>
                   <Col lg="12">
                     <div className="mb-2">
-                      <p className="fs-6 fw-medium my-2 ms-1">Create User ID</p>
+                      <p className="fs-6 fw-medium my-1 ms-1">Create User ID</p>
                       <input
                         type="text"
                         value={userIDinput}
@@ -237,7 +237,7 @@ function Register() {
                     <Row>
                       <Col lg="6">
                         <div className="mb-2">
-                          <p className="fs-6 fw-medium my-2 ms-1">Password</p>
+                          <p className="fs-6 fw-medium my-1 ms-1">Password</p>
                           <input
                             type="text"
                             className="form-control"
@@ -251,7 +251,7 @@ function Register() {
                       </Col>
                       <Col lg="6">
                         <div className="mb-2">
-                          <p className="fs-6 fw-medium my-2 ms-1">
+                          <p className="fs-6 fw-medium my-1 ms-1">
                             Repeat Password
                           </p>
                           <input
@@ -300,7 +300,7 @@ function Register() {
                       <Row>
                         <Col lg="6">
                           <div>
-                            <p className="fs-6 fw-medium my-2 ms-1">
+                            <p className="fs-6 fw-medium my-1 ms-1">
                               PIN (4-digits)
                             </p>
                             <input
@@ -319,7 +319,7 @@ function Register() {
                         </Col>
                         <Col lg="6">
                           <div>
-                            <p className="fs-6 fw-medium my-2 ms-1">
+                            <p className="fs-6 fw-medium my-1 ms-1">
                               Confirm PIN
                             </p>
                             <input
@@ -369,14 +369,19 @@ function Register() {
                   Log in
                 </Link>
               </p>
-              <div className="alert alert-warning" role="alert">
-                Warning! Please note down account credentials because there is
-                no account recovery option due to security reasons.
-              </div>
+
               <div className="alert alert-info" role="alert">
-                We don't ask for your personal details such as email, phone
-                number, or even your name. We strive to keep your identity
-                anonymous.
+                <ul>
+                  <li>
+                    Warning! Please note down account credentials because there
+                    is no account recovery option due to security reasons.
+                  </li>
+                  <li>
+                    We don't ask for your personal details such as email, phone
+                    number, or even your name. We strive to keep your identity
+                    anonymous.
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
