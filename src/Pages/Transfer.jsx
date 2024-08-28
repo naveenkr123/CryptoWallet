@@ -5,6 +5,15 @@ import tImg from "../assets/images/transfer.svg";
 import { useNavigate } from "react-router";
 import { AppContext } from "./AppContext";
 
+function generateRandomString() {
+  const characters = "0123456789";
+  const randomDigits = Array.from(
+    { length: 16 },
+    () => characters[Math.floor(Math.random() * characters.length)]
+  ).join("");
+  return `T${randomDigits}`;
+}
+
 function Transfer() {
   const [wallet_address, setWallet_address] = useState("");
   const [sameWA, setSameWA] = useState(false);
@@ -31,10 +40,17 @@ function Transfer() {
     return null;
   }
 
+  // Current Date
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString(
+    "default",
+    { month: "short" }
+  )} ${currentDate.getFullYear()}`;
+
   async function transferBTC(event) {
     event.preventDefault();
 
-    // Disable form submission button to prevent multiple submissions
+    // Reset previous error messages
     setTransferMSG(false);
     setSameWA(false);
     setErrorWA(false);
@@ -64,36 +80,61 @@ function Transfer() {
         setErrorWA(true); // Wallet address not found error!
         return;
       }
-
       if (isNaN(amount) || amount <= 0) {
         setInvalidError(true); // Invalid amount error
         return;
       }
-
       if (amount > senderData.balance) {
         setBalanceError(true); // Insufficient balance error
         return;
       }
 
-      // Calculate updated balances
-      const senderUpdatedBalance = senderData.balance - amount;
-      const recipientUpdatedBalance = recipientData[0].balance + amount;
+      // Generate a transaction ID
+      const txnID = generateRandomString();
+
+      // Update sender's and recipient's transaction arrays
+      const updatedSenderTransactions = [
+        ...senderData.transactions,
+        {
+          transactionID: txnID,
+          senderUID: senderData.userID,
+          senderWA: senderData.walletAddress,
+          recipientUID: recipientData[0].userID,
+          recipientWA: recipientData[0].walletAddress,
+          date: formattedDate,
+          amount: amount,
+          type: "debit",
+          status: "success",
+        },
+      ];
+      const updatedRecipientTransactions = [
+        ...recipientData[0].transactions,
+        {
+          transactionID: txnID,
+          senderUID: senderData.userID,
+          senderWA: senderData.walletAddress,
+          recipientUID: recipientData[0].userID,
+          recipientWA: recipientData[0].walletAddress,
+          date: formattedDate,
+          amount: amount,
+          type: "credit",
+          status: "success",
+        },
+      ];
 
       // Perform debit and credit operations concurrently
       const [senderPutResponse, recipientPutResponse] = await Promise.all([
-        fetch(
-          `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              ...senderData,
-              balance: senderUpdatedBalance,
-            }),
-          }
-        ),
+        fetch(`http://${myContext.serverIP}:8000/users/${senderData.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...senderData,
+            balance: senderData.balance - amount,
+            transactions: updatedSenderTransactions,
+          }),
+        }),
         fetch(
           `http://${myContext.serverIP}:8000/users/${recipientData[0].id}`,
           {
@@ -103,7 +144,8 @@ function Transfer() {
             },
             body: JSON.stringify({
               ...recipientData[0],
-              balance: recipientUpdatedBalance,
+              balance: recipientData[0].balance + amount,
+              transactions: updatedRecipientTransactions,
             }),
           }
         ),
@@ -114,8 +156,10 @@ function Transfer() {
       } else {
         // Handle partial failure and revert the operation if necessary
         console.error("Error: Transfer failed, reverting...");
+
+        // Revert sender balance and transactions
         await fetch(
-          `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
+          `http://${myContext.serverIP}:8000/users/${senderData.id}`,
           {
             method: "PUT",
             headers: {
@@ -123,15 +167,21 @@ function Transfer() {
             },
             body: JSON.stringify({
               ...senderData,
-              balance: senderData.balance, // Revert to original balance
+              balance: senderData.balance,
+              transactions: senderData.transactions, // Revert to original transactions
             }),
           }
         );
+
+        // Optionally, revert recipient balance and transactions if necessary
+
         setBalanceError(true);
       }
     } catch (error) {
       console.error("Transfer Error:", error);
       setBalanceError(true);
+    } finally {
+      // Re-enable form submission button or other UI elements if needed
     }
   }
 
@@ -142,12 +192,12 @@ function Transfer() {
           <Row>
             <Col lg="4">
               <div className="px-3 px-md-0">
-                <h2 className="text-center fw-bold">
+                <h4 className="text-center fw-bold">
                   Crypto<span style={{ color: "#072541" }}>Wallet</span>
-                </h2>
-                <h5 className="text-center fw-semibold mt-2 mb-5">
+                </h4>
+                <p className="text-center text-secondary mb-5">
                   Transfer CryptoCoins
-                </h5>
+                </p>
 
                 <form onSubmit={transferBTC}>
                   <div className="mb-3">
@@ -205,7 +255,7 @@ function Transfer() {
                   </div>
                   <button
                     type="submit"
-                    className="blue-btn rounded border-0 w-100 py-2 px-3"
+                    className="primaryBtn rounded border-0 w-100 py-2 px-3"
                   >
                     Transfer
                   </button>

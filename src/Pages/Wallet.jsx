@@ -103,7 +103,7 @@ function Wallet() {
             <div className="d-flex justify-content-center center gap-3">
               <Link to="/transfer">
                 <button
-                  className="btn btn-success btn-sm px-3 rounded-pill"
+                  className="btn btn-dark bg-black border-0 px-3 rounded-pill"
                   style={{
                     backgroundColor: "#13aa52",
                     border: "1px solid #13aa52",
@@ -113,7 +113,7 @@ function Wallet() {
                 </button>
               </Link>
               <Link to="/transactions">
-                <button className="btn btn-dark bg-black btn-sm px-3 rounded-pill">
+                <button className="btn btn-dark bg-light text-black border-light px-3 rounded-pill">
                   Transactions
                 </button>
               </Link>

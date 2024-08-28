@@ -18,12 +18,12 @@ function Home() {
                       Secure, Seamless <br />
                       Gateway to Cryptocurrency
                     </h1>
-                    <p className="mt-3 mb-4 sub-head">
+                    <p className=" mb-4 sub-head">
                       Safely store, manage, and trade your digital assets with
                       confidence
                     </p>
                     <Link to="/register">
-                      <button className="blue-btn">START NOW</button>
+                      <button className="primaryBtn rounded">START NOW</button>
                     </Link>
                   </div>
                 </div>
@@ -37,10 +37,7 @@ function Home() {
           </Container>
         </section>
 
-        <section
-          className="why-sec py-5 text-center"
-          style={{ backgroundColor: "#072541" }}
-        >
+        <section className="why_sec py-5 text-center">
           <Container>
             <div className="px-md-5">
               <h2 className="text-light mb-3">What is CryptoWallet?</h2>

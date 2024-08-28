@@ -29,12 +29,12 @@ function Header() {
           <Navbar.Collapse id="basic-navbar-nav">
             <div className="nav-btn-cont py-3 py-lg-0">
               <Link className="nav-link" to="/login">
-                <button className="login-btn blue-btn bg-light text-black border border-2 me-2 py-1 px-3">
+                <button className="primaryBtn bg-light text-black rounded me-2 py-2 px-4">
                   Log In
                 </button>
               </Link>
               <Link className="nav-link" to="/register">
-                <button className="blue-btn py-1 px-3 mt-2 mt-lg-0">
+                <button className="primaryBtn py-2 px-4 mt-2 mt-lg-0 rounded">
                   Sign Up
                 </button>
               </Link>
@@ -70,7 +70,9 @@ function Header() {
                 className="nav-link notification_opt"
                 to="/notifications"
               >
-                <span className="notify_dot"></span>
+                {myContext.userData?.isNotification && (
+                  <span className="notify_dot"></span>
+                )}
                 Notifications
               </NavLink>
               <NavLink className="nav-link" to="/settings">

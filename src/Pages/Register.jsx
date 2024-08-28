@@ -1,194 +1,133 @@
-import React, { useState } from "react";
-import Wrapper from "../Components/Wrapper";
+import React, { useState, useContext } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import Wrapper from "../Components/Wrapper";
 import { AppContext } from "./AppContext";
 
 function Register() {
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
-  const [userIDinput, setUserIDinput] = useState("");
-  const [passwordinput, setPasswordinput] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [pinInput, setPinInput] = useState("");
-  const [repeatPIN, setRepeatPIN] = useState("");
-  const [accSuccess, setAccSuccess] = useState(false);
-  const [idExist, setIDexist] = useState(false);
-  const [passError, setPassError] = useState(false);
-  const [validationError, setValidationError] = useState(false);
-  const [pinError, setPinError] = useState(false);
-  const [pinValidation, setPinValidation] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [user, setUser] = useState({
+
+  const [formData, setFormData] = useState({
     userID: "",
-    walletAddress: "",
     password: "",
-    pin: null,
-    TFA: false,
-    balance: 5,
+    repeatPassword: "",
+    pin: "",
+    repeatPIN: "",
+    isChecked: false,
   });
 
-  function handleCheckboxChange() {
-    setIsChecked(!isChecked);
-    const inputBoxes = document.querySelectorAll(".enable-on-check");
-    inputBoxes.forEach((inputBox) => {
-      inputBox.disabled = !isChecked;
+  const [errors, setErrors] = useState({});
+  const [accountSuccess, setAccountSuccess] = useState(false);
+
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString(
+    "default",
+    { month: "short" }
+  )} ${currentDate.getFullYear()}`;
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
     });
-  }
+  };
 
-  function generateRandomString() {
-    const characters =
-      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const length = 32;
-    let result = "";
+  const validateInputs = () => {
+    const errors = {};
 
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters.charAt(randomIndex);
+    if (formData.password.length < 6) {
+      errors.validationError = "Password must contain at least 6 characters.";
     }
-    return result;
-  }
-
-  async function setData(event) {
-    event.preventDefault();
-
-    // clear all previous error msg
-    setIDexist(false);
-    setValidationError(false);
-    setPassError(false);
-    setPinError(false);
-    setPinValidation(false);
-
-    // first check validation
-    if (passwordinput.length < 6 || repeatPassword.length < 6) {
-      setValidationError(true);
-    } else {
-      setValidationError(false);
-      if (passwordinput !== repeatPassword) {
-        setPassError(true);
-      } else {
-        if (isChecked) {
-          if (
-            pinInput.toString().length !== 4 ||
-            repeatPIN.toString().length !== 4
-          ) {
-            setPinValidation(true);
-          } else {
-            if (pinInput !== repeatPIN) {
-              setPinError(true);
-            } else {
-              try {
-                const response = await fetch(
-                  `http://${myContext.serverIP}:8000/users?userID=${userIDinput}`
-                );
-                const contentLength = response.headers.get("Content-Length");
-                if (parseInt(contentLength) !== 2) {
-                  console.log("User ID already exists");
-                  setIDexist(true);
-                } else {
-                  // User ID is available, proceed with registration
-                  const walletAddress = generateRandomString();
-                  const updatedUser = {
-                    ...user,
-                    userID: userIDinput,
-                    password: passwordinput,
-                    walletAddress: walletAddress,
-                    pin: isChecked ? pinInput : null,
-                    TFA: isChecked ? true : false,
-                  };
-                  const createUserResponse = await fetch(
-                    `http://${myContext.serverIP}:8000/users`,
-                    {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify(updatedUser),
-                    }
-                  );
-
-                  if (createUserResponse.ok) {
-                    console.log("Account created successfully!");
-                    setUser(updatedUser);
-                    setPassError(false);
-                    setIDexist(false);
-                    setAccSuccess(true);
-                    setTimeout(() => {
-                      navigate("/login");
-                      window.location.reload();
-                    }, 2000);
-                  } else {
-                    console.error(
-                      "Error creating account:",
-                      createUserResponse.statusText
-                    );
-                    // Display appropriate error message
-                  }
-                }
-              } catch (error) {
-                console.error("Error:", error);
-                // Handle error
-              }
-            }
-          }
-        } else {
-          try {
-            const response = await fetch(
-              `http://${myContext.serverIP}:8000/users?userID=${userIDinput}`
-            );
-            const contentLength = response.headers.get("Content-Length");
-            if (parseInt(contentLength) !== 2) {
-              console.log("User ID already exists");
-              setIDexist(true);
-            } else {
-              // User ID is available, proceed with registration
-              const walletAddress = generateRandomString();
-              const updatedUser = {
-                ...user,
-                userID: userIDinput,
-                password: passwordinput,
-                walletAddress: walletAddress,
-                pin: isChecked ? pinInput : null,
-                TFA: isChecked ? true : false,
-              };
-              const createUserResponse = await fetch(
-                `http://${myContext.serverIP}:8000/users`,
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(updatedUser),
-                }
-              );
-
-              if (createUserResponse.ok) {
-                console.log("Account created successfully!");
-                setUser(updatedUser);
-                setPassError(false);
-                setIDexist(false);
-                setAccSuccess(true);
-                setTimeout(() => {
-                  navigate("/login");
-                  window.location.reload();
-                }, 2000);
-              } else {
-                console.error(
-                  "Error creating account:",
-                  createUserResponse.statusText
-                );
-                // Display appropriate error message
-              }
-            }
-          } catch (error) {
-            console.error("Error:", error);
-            // Handle error
-          }
-        }
+    if (formData.password !== formData.repeatPassword) {
+      errors.passwordMismatch = "Passwords do not match.";
+    }
+    if (formData.isChecked) {
+      if (formData.pin.length !== 4) {
+        errors.pinValidation = "PIN must be 4 digits.";
+      }
+      if (formData.pin !== formData.repeatPIN) {
+        errors.pinMismatch = "PINs do not match.";
       }
     }
-  }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const checkUserIDExists = async (userID) => {
+    try {
+      const response = await fetch(
+        `http://${myContext.serverIP}:8000/users?userID=${userID}`
+      );
+      const contentLength = response.headers.get("Content-Length");
+      return parseInt(contentLength) !== 2;
+    } catch (error) {
+      console.error("Error checking user ID:", error);
+      return true;
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!validateInputs()) return;
+
+    const userIDExists = await checkUserIDExists(formData.userID);
+    if (userIDExists) {
+      setErrors({ userIDExists: "User ID already exists!" });
+      return;
+    }
+
+    const newUser = {
+      userID: formData.userID,
+      walletAddress: generateRandomString(),
+      password: formData.password,
+      pin: formData.isChecked ? parseInt(formData.pin, 10) : null,
+      TFA: formData.isChecked,
+      balance: 5,
+      isNotification: true,
+      transactions: [],
+      notifications: [
+        {
+          subject: "Welcome to CryptoWallet",
+          date: formattedDate,
+          content: `Hello ${formData.userID}, Welcome to CryptoWallet.\n Make sure you note down your account credentials because there is no account recovery option due to security reasons.`,
+        },
+        {
+          subject: "Security Alert",
+          date: formattedDate,
+          content: `Hello ${formData.userID},\n Ensure you enable the 2FA feature to enhance the security of your account. You will have to enter the PIN each time you are sending CryptoCoins and Login. Please ignore if done already.`,
+        },
+      ],
+    };
+
+    try {
+      const createUserResponse = await fetch(
+        `http://${myContext.serverIP}:8000/users`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        }
+      );
+
+      if (createUserResponse.ok) {
+        setAccountSuccess(true);
+        setTimeout(() => {
+          navigate("/login");
+          window.location.reload();
+        }, 2000);
+      } else {
+        console.error("Error creating account:", createUserResponse.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <Wrapper>
@@ -196,41 +135,28 @@ function Register() {
         <Container>
           <div className="w-100 h-100 py-5 px-4 p-md-5">
             <div className="col-lg-6 login-div mx-auto pb-5">
-              <h2 className="text-center fw-bold">
+              <h4 className="text-center fw-bold mb-0">
                 Crypto<span style={{ color: "#072541" }}>Wallet</span>
-              </h2>
-              <h5 className="text-center fw-semibold mt-2 mb-5">
+              </h4>
+              <p className="text-center text-secondary mt-0 mb-5">
                 Create new account
-              </h5>
-              <div
-                className={`alert alert-success ${
-                  accSuccess ? "d-block" : "d-none"
-                }`}
-                role="alert"
-              >
-                Account created successfully!
-              </div>
-              <form onSubmit={setData}>
+              </p>
+              <form onSubmit={handleSubmit}>
                 <Row>
                   <Col lg="12">
                     <div className="mb-2">
                       <p className="fs-6 fw-medium my-1 ms-1">Create User ID</p>
                       <input
                         type="text"
-                        value={userIDinput}
-                        onChange={(e) => {
-                          setUserIDinput(e.target.value);
-                        }}
+                        name="userID"
+                        value={formData.userID}
+                        onChange={handleInputChange}
                         className="form-control"
                         required
                       />
-                      <p
-                        className={`text-danger ${
-                          idExist ? "d-block" : "d-none"
-                        }`}
-                      >
-                        User ID already exists!
-                      </p>
+                      {errors.userIDExists && (
+                        <p className="text-danger">{errors.userIDExists}</p>
+                      )}
                     </div>
                   </Col>
                   <Col lg="12">
@@ -239,12 +165,11 @@ function Register() {
                         <div className="mb-2">
                           <p className="fs-6 fw-medium my-1 ms-1">Password</p>
                           <input
-                            type="text"
+                            type="password"
+                            name="password"
                             className="form-control"
-                            value={passwordinput}
-                            onChange={(e) => {
-                              setPasswordinput(e.target.value);
-                            }}
+                            value={formData.password}
+                            onChange={handleInputChange}
                             required
                           />
                         </div>
@@ -255,29 +180,22 @@ function Register() {
                             Repeat Password
                           </p>
                           <input
-                            type="text"
+                            type="password"
+                            name="repeatPassword"
                             className="form-control"
-                            value={repeatPassword}
-                            onChange={(e) => setRepeatPassword(e.target.value)}
+                            value={formData.repeatPassword}
+                            onChange={handleInputChange}
                             required
                           />
                         </div>
                       </Col>
-                      <p
-                        className={`text-danger ${
-                          validationError ? "d-block" : "d-none"
-                        }`}
-                      >
-                        Password must contain atleast 6 characters.
-                      </p>
-                      <p
-                        className={`text-danger ${
-                          passError ? "d-block" : "d-none"
-                        }`}
-                      >
-                        Password doesn't match!
-                      </p>
                     </Row>
+                    {errors.validationError && (
+                      <p className="text-danger">{errors.validationError}</p>
+                    )}
+                    {errors.passwordMismatch && (
+                      <p className="text-danger">{errors.passwordMismatch}</p>
+                    )}
                   </Col>
                   <Col lg="12">
                     <div className="mt-4">
@@ -287,81 +205,76 @@ function Register() {
                           className="form-check-input"
                           type="checkbox"
                           id="flexCheckChecked"
-                          onChange={handleCheckboxChange}
-                          checked={isChecked}
+                          name="isChecked"
+                          onChange={handleInputChange}
+                          checked={formData.isChecked}
                         />
                         <label
                           className="form-check-label"
-                          for="flexCheckChecked"
+                          htmlFor="flexCheckChecked"
                         >
-                          Enable Two-Factor Authenication
+                          Enable Two-Factor Authentication
                         </label>
                       </div>
-                      <Row>
-                        <Col lg="6">
-                          <div>
-                            <p className="fs-6 fw-medium my-1 ms-1">
-                              PIN (4-digits)
-                            </p>
-                            <input
-                              type="number"
-                              pattern="[0-9]*"
-                              inputMode="numeric"
-                              value={pinInput}
-                              onChange={(e) =>
-                                setPinInput(parseInt(e.target.value))
-                              }
-                              className="form-control enable-on-check"
-                              required
-                              disabled={!isChecked}
-                            />
-                          </div>
-                        </Col>
-                        <Col lg="6">
-                          <div>
-                            <p className="fs-6 fw-medium my-1 ms-1">
-                              Confirm PIN
-                            </p>
-                            <input
-                              type="number"
-                              pattern="[0-9]*"
-                              inputMode="numeric"
-                              value={repeatPIN}
-                              onChange={(e) =>
-                                setRepeatPIN(parseInt(e.target.value))
-                              }
-                              className="form-control enable-on-check"
-                              required
-                              disabled={!isChecked}
-                            />
-                          </div>
-                        </Col>
-                        <p
-                          className={`text-danger ${
-                            pinValidation ? "d-block" : "d-none"
-                          }`}
-                        >
-                          PIN must be 4-digits only!
-                        </p>
-                        <p
-                          className={`text-danger ${
-                            pinError ? "d-block" : "d-none"
-                          }`}
-                        >
-                          PIN doesn't match!
-                        </p>
-                      </Row>
+                      {formData.isChecked && (
+                        <Row>
+                          <Col lg="6">
+                            <div>
+                              <p className="fs-6 fw-medium my-1 ms-1">
+                                PIN (4-digits)
+                              </p>
+                              <input
+                                type="number"
+                                pattern="[0-9]*"
+                                inputMode="numeric"
+                                name="pin"
+                                value={formData.pin}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                required
+                              />
+                            </div>
+                          </Col>
+                          <Col lg="6">
+                            <div>
+                              <p className="fs-6 fw-medium my-1 ms-1">
+                                Confirm PIN
+                              </p>
+                              <input
+                                type="number"
+                                pattern="[0-9]*"
+                                inputMode="numeric"
+                                name="repeatPIN"
+                                value={formData.repeatPIN}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                required
+                              />
+                            </div>
+                          </Col>
+                        </Row>
+                      )}
+                      {errors.pinValidation && (
+                        <p className="text-danger">{errors.pinValidation}</p>
+                      )}
+                      {errors.pinMismatch && (
+                        <p className="text-danger">{errors.pinMismatch}</p>
+                      )}
                     </div>
                   </Col>
                 </Row>
-
                 <button
                   type="submit"
-                  className="blue-btn rounded w-100 mt-4 py-2 px-3"
+                  className="primaryBtn rounded w-100 mt-4 py-2 px-3"
                 >
                   Submit
                 </button>
               </form>
+              {accountSuccess && (
+                <div className="alert alert-success mt-2" role="alert">
+                  Account created successfully!
+                </div>
+              )}
 
               <p className="text-center my-4">
                 Already have an account?{" "}
@@ -373,8 +286,8 @@ function Register() {
               <div className="alert alert-info" role="alert">
                 <ul>
                   <li>
-                    Warning! Please note down account credentials because there
-                    is no account recovery option due to security reasons.
+                    Warning! Please note down your account credentials because
+                    there is no account recovery option due to security reasons.
                   </li>
                   <li>
                     We don't ask for your personal details such as email, phone
@@ -389,6 +302,15 @@ function Register() {
       </section>
     </Wrapper>
   );
+}
+
+function generateRandomString() {
+  const characters =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return Array.from(
+    { length: 32 },
+    () => characters[Math.floor(Math.random() * characters.length)]
+  ).join("");
 }
 
 export default Register;

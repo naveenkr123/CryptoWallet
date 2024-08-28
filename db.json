@@ -7,54 +7,9 @@
       "password": "abc123",
       "pin": 1803,
       "TFA": true,
-      "balance": 5,
-      "isNotification": true,
-      "transactions": [
-        {
-          "transactionID": "T79874239472487209",
-          "senderUID": "naveen123",
-          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
-          "recipientUID": "sonu",
-          "recipientWA": "yA28EtU4OAOsrDp1IKjXwlSPYOvLKEWk",
-          "date": "12 Dec 2024",
-          "amount": "0.15556",
-          "type": "debit",
-          "status": "success"
-        },
-        {
-          "transactionID": "T79874239472487209",
-          "senderUID": "sonu",
-          "senderWA": "yA28EtU4OAOsrDp1IKjXwlSPYOvLKEWk",
-          "recipientUID": "naveen123",
-          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
-          "date": "12 Dec 2024",
-          "amount": "0.15556",
-          "type": "credit",
-          "status": "success"
-        },
-        {
-          "transactionID": "T79874239472487209",
-          "senderUID": "naveen123",
-          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
-          "recipientUID": "sonu",
-          "recipientWA": "yA28EtU4OAOsrDp1IKjXwlSPYOvLKEWk",
-          "date": "12 Dec 2024",
-          "amount": "0.15556",
-          "type": "debit",
-          "status": "success"
-        },
-        {
-          "transactionID": "T79874239472487209",
-          "senderUID": "sonu",
-          "senderWA": "yA28EtU4OAOsrDp1IKjXwlSPYOvLKEWk",
-          "recipientUID": "naveen123",
-          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
-          "date": "12 Dec 2024",
-          "amount": "0.15556",
-          "type": "credit",
-          "status": "success"
-        }
-      ],
+      "admin": false,
+      "balance": 7,
+      "isNotification": false,
       "notifications": [
         {
           "subject": "Welcome to CryptoWallet",
@@ -66,7 +21,253 @@
           "date": "13 Dec 2024",
           "content": "hello naveen123,\n Ensure you enable the 2FA feature to enhance the security of your account. You will have to enter the PIN each time you are sending CryptoCoins and Login."
         }
+      ],
+      "transactions": [
+        {
+          "transactionID": "T4581533252894680",
+          "senderUID": "naveen123",
+          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "recipientUID": "Johan511",
+          "recipientWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "date": "26 Aug 2024",
+          "amount": 0.5,
+          "type": "debit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T5901037136486681",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 2,
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T1522634370296188",
+          "senderUID": "Tenma911",
+          "senderWA": "TVWIFHT0EmqIm2iFgAhxJbvvCcJsrzv8",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T5561196622370892",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T8648318741797344",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T9293671716143341",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T5013108906554611",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T6689164204548042",
+          "senderUID": "naveen123",
+          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "recipientUID": "Johan511",
+          "recipientWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "date": "27 Aug 2024",
+          "amount": 3,
+          "type": "debit",
+          "status": "success"
+        }
       ]
+    },
+    {
+      "id": "b0a5",
+      "userID": "Johan511",
+      "walletAddress": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+      "password": "abc124",
+      "pin": 1112,
+      "TFA": true,
+      "admin": false,
+      "balance": 5,
+      "isNotification": false,
+      "transactions": [
+        {
+          "transactionID": "T4581533252894680",
+          "senderUID": "naveen123",
+          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "recipientUID": "Johan511",
+          "recipientWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "date": "26 Aug 2024",
+          "amount": 0.5,
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T5901037136486681",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 2,
+          "type": "debit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T8648318741797344",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "debit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T9293671716143341",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "debit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T5013108906554611",
+          "senderUID": "Johan511",
+          "senderWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "debit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T6689164204548042",
+          "senderUID": "naveen123",
+          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "recipientUID": "Johan511",
+          "recipientWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "date": "27 Aug 2024",
+          "amount": 3,
+          "type": "credit",
+          "status": "success"
+        }
+      ],
+      "notifications": [
+        {
+          "subject": "Welcome to CryptoWallet",
+          "date": "26 Aug 2024",
+          "content": "Hello Johan511, Welcome to CryptoWallet.\n Make sure you note down your account credentials because there is no account recovery option due to security reasons."
+        },
+        {
+          "subject": "Security Alert",
+          "date": "26 Aug 2024",
+          "content": "Hello Johan511,\n Ensure you enable the 2FA feature to enhance the security of your account. You will have to enter the PIN each time you are sending CryptoCoins and Login. Please ignore if done already."
+        }
+      ]
+    },
+    {
+      "id": "6483",
+      "userID": "Tenma911",
+      "walletAddress": "TVWIFHT0EmqIm2iFgAhxJbvvCcJsrzv8",
+      "password": "abc123",
+      "pin": 1234,
+      "TFA": true,
+      "admin": false,
+      "balance": 4,
+      "isNotification": true,
+      "transactions": [
+        {
+          "transactionID": "T1522634370296188",
+          "senderUID": "Tenma911",
+          "senderWA": "TVWIFHT0EmqIm2iFgAhxJbvvCcJsrzv8",
+          "recipientUID": "naveen123",
+          "recipientWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "date": "26 Aug 2024",
+          "amount": 1,
+          "type": "debit",
+          "status": "success"
+        }
+      ],
+      "notifications": [
+        {
+          "subject": "Welcome to CryptoWallet",
+          "date": "26 Aug 2024",
+          "content": "Hello Tenma911, Welcome to CryptoWallet.\n Make sure you note down your account credentials because there is no account recovery option due to security reasons."
+        },
+        {
+          "subject": "Security Alert",
+          "date": "26 Aug 2024",
+          "content": "Hello Tenma911,\n Ensure you enable the 2FA feature to enhance the security of your account. You will have to enter the PIN each time you are sending CryptoCoins and Login. Please ignore if done already."
+        }
+      ]
+    },
+    {
+      "id": "8ec1",
+      "userID": "dddddd",
+      "walletAddress": "p3bBxX7CYKyf3MyY2j4npGg7YU3WdGkl",
+      "password": "dddddd",
+      "pin": null,
+      "TFA": false,
+      "balance": 5,
+      "isNotification": true,
+      "transactions": [],
+      "notifications": [
+        {
+          "subject": "Welcome to CryptoWallet",
+          "date": "28 Aug 2024",
+          "content": "Hello dddddd, Welcome to CryptoWallet.\n Make sure you note down your account credentials because there is no account recovery option due to security reasons."
+        },
+        {
+          "subject": "Security Alert",
+          "date": "28 Aug 2024",
+          "content": "Hello dddddd,\n Ensure you enable the 2FA feature to enhance the security of your account. You will have to enter the PIN each time you are sending CryptoCoins and Login. Please ignore if done already."
+        }
+      ]
+    }
+  ],
+  "admins": [
+    {
+      "adminID": "naveen001",
+      "password": "abc001"
     }
   ]
 }

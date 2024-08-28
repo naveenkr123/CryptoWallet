@@ -16,7 +16,7 @@ function Login() {
   const [authError, setAuthError] = useState(false);
 
   const myContext = useContext(AppContext);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   function authentication(event) {
     event.preventDefault();
@@ -24,7 +24,7 @@ function Login() {
     if (pin === userRecord.pin) {
       myContext.setLoginStatus(true);
       myContext.setUserData(userRecord);
-      navigate("/wallet"); // Navigate to wallet page
+      navigate("/wallet");
     } else {
       setAuthError(true);
     }
@@ -49,10 +49,9 @@ function Login() {
           if (user.TFA) {
             setTFA_active(true);
           } else {
-            // Password matches
             myContext.setLoginStatus(true);
             myContext.setUserData(userData[0]);
-            navigate("/account"); // Navigate to Account page
+            navigate("/wallet");
           }
         } else {
           setErrorMessage("Incorrect password!");
@@ -81,16 +80,16 @@ function Login() {
                   className="login-div mx-auto pb-5"
                   style={{ width: "300px" }}
                 >
-                  <h2 className="text-center fw-bold">
+                  <h3 className="text-center fw-bold mb-1">
                     Crypto<span style={{ color: "#072541" }}>Wallet</span>
-                  </h2>
-                  <h5 className="text-center fw-semibold mt-2 mb-5">
+                  </h3>
+                  <p className="text-center text-secondary mb-5">
                     Login to your account
-                  </h5>
+                  </p>
 
                   <form onSubmit={verifyAccount}>
                     <div className="mb-3">
-                      <p className="fs-6 fw-medium my-2 ms-1">User ID</p>
+                      <p className="fs-6 fw-medium my-1 ms-1">User ID</p>
                       <input
                         value={userID}
                         onChange={(e) => setUserID(e.target.value)}
@@ -98,12 +97,12 @@ function Login() {
                         className="form-control"
                         id="loginID"
                         aria-describedby="emailHelp"
-                        placeholder=""
+                        placeholder="Enter your user ID"
                         required
                       />
                     </div>
                     <div>
-                      <p className="fs-6 fw-medium my-2 ms-1">Password</p>
+                      <p className="fs-6 fw-medium my-1 ms-1">Password</p>
                       <input
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -111,13 +110,13 @@ function Login() {
                         className="form-control"
                         id="loginPass"
                         aria-describedby="emailHelp"
-                        placeholder=""
+                        placeholder="Enter your password"
                         required
                       />
                     </div>
                     <button
                       type="submit"
-                      className="blue-btn rounded w-100 py-2 px-3 mt-4"
+                      className="primaryBtn rounded w-100 py-2 px-3 mt-4"
                     >
                       Login
                     </button>
@@ -172,7 +171,7 @@ function Login() {
                   <p className="text-center my-4">
                     Don't have an account?{" "}
                     <Link to="/register" className="text-decoration-none">
-                      Click here
+                      Sign Up
                     </Link>
                   </p>
 

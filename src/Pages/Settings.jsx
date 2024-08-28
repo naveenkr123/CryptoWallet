@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import Wrapper from "../Components/Wrapper";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Tab, Tabs } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { AppContext } from "./AppContext";
+import view from "../assets/images/view.png";
+import hide from "../assets/images/hide.png";
 
 function Register() {
   const [currentPass, setCurrentPass] = useState("");
@@ -21,6 +23,7 @@ function Register() {
   const [deletionConfirm, setDeletionConfirm] = useState("");
   const [deletionError, setDeletionError] = useState(false);
   const [accountDeleted, setAccountDeleted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
@@ -47,22 +50,31 @@ function Register() {
     setFailedError(false);
     setPassChange(false);
 
+    // Check if the current password matches
     if (userData.password === currentPass) {
+      // Check if the new password and repeated password match
       if (newPass === repeatPass) {
+        // Check if the new password meets the length requirement
         if (newPass.length < 6 || repeatPass.length < 6) {
           setValidationError(true);
         } else {
           try {
+            const res = await fetch(
+              `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+            );
+            const liveData = await res.json();
             const response = await fetch(
-              `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
+              `http://${myContext.serverIP}:8000/users/${liveData[0].id}`,
               {
                 method: "PUT",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ ...userData, password: newPass }),
+                body: JSON.stringify({ ...liveData[0], password: newPass }),
               }
             );
+
+            // Handle response
             if (response.ok) {
               setPassChange(true);
               setTimeout(() => {
@@ -76,10 +88,10 @@ function Register() {
           }
         }
       } else {
-        setPassError(true);
+        setPassError(true); // New password and repeat password do not match
       }
     } else {
-      setCorrectPassError(true);
+      setCorrectPassError(true); // Current password is incorrect
     }
   }
 
@@ -89,7 +101,7 @@ function Register() {
     setPinError(false);
     setPinValidation(false);
 
-    console.log(pinInput, repeatPIN);
+    // console.log(pinInput, repeatPIN);
 
     if (pinInput.toString().length !== 4 || repeatPIN.toString().length !== 4) {
       setPinValidation(true);
@@ -97,16 +109,23 @@ function Register() {
       if (pinInput !== repeatPIN) {
         setPinError(true);
       } else {
-        console.log("done!");
         try {
+          const res = await fetch(
+            `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+          );
+          const liveData = await res.json();
           const response = await fetch(
-            `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
+            `http://${myContext.serverIP}:8000/users/${liveData[0].id}`,
             {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ ...userData, pin: pinInput, TFA: true }),
+              body: JSON.stringify({
+                ...liveData[0],
+                pin: pinInput,
+                TFA: true,
+              }),
             }
           );
 
@@ -146,175 +165,189 @@ function Register() {
     }
   }
 
+  console.log(showPassword);
+
   return (
     <Wrapper>
       <section>
         <Container>
-          <div className="col-lg-8 nCard p-3 my-4 mx-auto">
-            <h5 className="mb-4">Account Settings</h5>
+          <div className="col-lg-8 col-xl-6 nCard p-3 my-4 mx-auto">
+            <h5 className="mb-0">Account Settings</h5>
+            <p className="subheading">
+              Manage your account security and preferences
+            </p>
 
             <div className="border-top pt-3 mb-4">
-              <div className="col-lg-6">
-                <h6 className="fw-semibold mb-2">
-                  Change your account password:
-                </h6>
-                <form onSubmit={changePassword}>
-                  <div className="mb-3">
-                    <p className="fs-6 fw-medium my-2 ms-1">Current password</p>
-                    <input
-                      type="text"
-                      value={currentPass}
-                      onChange={(e) => setCurrentPass(e.target.value)}
-                      className="form-control"
-                      required
-                    />
-                    <p
-                      className={`text-danger ${
-                        correctPassError ? "d-block" : "d-none"
-                      }`}
-                    >
-                      Incorrect password
-                    </p>
-                  </div>
-                  <div className="mb-3">
-                    <p className="fs-6 fw-medium my-2 ms-1">New password</p>
-                    <input
-                      type="text"
-                      value={newPass}
-                      onChange={(e) => setNewPass(e.target.value)}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <p className="fs-6 fw-medium my-2 ms-1">
-                      Repeat new password
-                    </p>
-                    <input
-                      type="text"
-                      value={repeatPass}
-                      onChange={(e) => setRepeatPass(e.target.value)}
-                      className="form-control"
-                      required
-                    />
-                    <p
-                      className={`text-danger ${
-                        validationError ? "d-block" : "d-none"
-                      }`}
-                    >
-                      Password must be atleast 6 characters.
-                    </p>
-                    <p
-                      className={`text-danger ${
-                        passError ? "d-block" : "d-none"
-                      }`}
-                    >
-                      Enter same password in both fields.
-                    </p>
-                  </div>
-                  <button type="submit" className="blue-btn rounded py-1 px-2">
-                    Update
-                  </button>
-                </form>
-                <div
-                  className={`alert alert-danger mt-3 ${
-                    failedError ? "d-block" : "d-none"
-                  }`}
-                  role="alert"
-                >
-                  An error occurred. Please try again later.
-                </div>
-                <div
-                  className={`alert alert-success mt-3 ${
-                    passChange ? "d-block" : "d-none"
-                  }`}
-                  role="alert"
-                >
-                  Password changed!
-                </div>
-              </div>
-            </div>
-
-            <div className="border-top pt-3 mb-4">
-              <h6 className="fw-semibold mb-2">
-                Add/Update a 2FA PIN for additional security:
-              </h6>
-              <div className="col-lg-6">
-                <form onSubmit={changePIN}>
-                  <Row>
-                    <Col lg="6">
-                      <div className="mb-3">
-                        <p className="fs-6 fw-medium my-2 ms-1">
-                          PIN (4 digits)
+              <Tabs
+                defaultActiveKey="password"
+                id="uncontrolled-tab-example"
+                className="mb-3"
+              >
+                <Tab eventKey="password" title="Change Password">
+                  <form onSubmit={changePassword}>
+                    <div className="mb-3">
+                      <p className="fs-6 fw-medium my-1 ms-1">
+                        Current password
+                      </p>
+                      <div className="position-relative w-100">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          value={currentPass}
+                          onChange={(e) => setCurrentPass(e.target.value)}
+                          className="form-control"
+                          required
+                        />
+                        <button
+                          className="eye_btn"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          <img src={showPassword ? hide : view} alt="icon" />
+                        </button>
+                      </div>
+                      <p
+                        className={`text-danger ${
+                          correctPassError ? "d-block" : "d-none"
+                        }`}
+                      >
+                        Incorrect password
+                      </p>
+                    </div>
+                    <div className="row">
+                      <div className="mb-3 col-lg-6">
+                        <p className="fs-6 fw-medium my-1 ms-1">New password</p>
+                        <input
+                          type="text"
+                          value={newPass}
+                          onChange={(e) => setNewPass(e.target.value)}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                      <div className="mb-3 col-lg-6">
+                        <p className="fs-6 fw-medium my-1 ms-1">
+                          Repeat new password
                         </p>
                         <input
-                          type="number"
-                          pattern="[0-9]*"
-                          inputMode="numeric"
+                          type="text"
+                          value={repeatPass}
+                          onChange={(e) => setRepeatPass(e.target.value)}
                           className="form-control"
-                          value={pinInput}
-                          onChange={(e) =>
-                            setPinInput(parseInt(e.target.value))
-                          }
+                          required
                         />
+                        <p
+                          className={`text-danger ${
+                            validationError ? "d-block" : "d-none"
+                          }`}
+                        >
+                          Password must be atleast 6 characters.
+                        </p>
+                        <p
+                          className={`text-danger ${
+                            passError ? "d-block" : "d-none"
+                          }`}
+                        >
+                          Enter same password in both fields.
+                        </p>
                       </div>
-                    </Col>
-                    <Col lg="6">
-                      <div className="mb-3">
-                        <p className="fs-6 fw-medium my-2 ms-1">Repeat PIN</p>
-                        <input
-                          type="number"
-                          pattern="[0-9]*"
-                          inputMode="numeric"
-                          className="form-control"
-                          value={repeatPIN}
-                          onChange={(e) =>
-                            setRepeatPIN(parseInt(e.target.value))
-                          }
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                  <p
-                    className={`text-danger ${
-                      pinValidation ? "d-block" : "d-none"
+                    </div>
+                    <button type="submit" className="primaryBtn w-100">
+                      Update Password
+                    </button>
+                  </form>
+                  <div
+                    className={`alert alert-danger mt-3 ${
+                      failedError ? "d-block" : "d-none"
                     }`}
+                    role="alert"
                   >
-                    PIN must be 4-digits only!
-                  </p>
-                  <p
-                    className={`text-danger ${pinError ? "d-block" : "d-none"}`}
+                    An error occurred. Please try again later.
+                  </div>
+                  <div
+                    className={`alert alert-success mt-3 ${
+                      passChange ? "d-block" : "d-none"
+                    }`}
+                    role="alert"
                   >
-                    PIN doesn't match!
-                  </p>
-                  <button type="submit" className="blue-btn rounded py-1 px-2">
-                    Save
-                  </button>
-                </form>
-                <div
-                  className={`alert alert-success mt-3 ${
-                    pinChange ? "d-block" : "d-none"
-                  }`}
-                  role="alert"
-                >
-                  PIN Changed!
-                </div>
-                <div
-                  className={`alert alert-danger mt-3 ${
-                    failedError ? "d-block" : "d-none"
-                  }`}
-                  role="alert"
-                >
-                  An error occurred. Please try again later.
-                </div>
-              </div>
+                    Password changed!
+                  </div>
+                </Tab>
+                <Tab eventKey="tfa" title="2FA Settings">
+                  <form onSubmit={changePIN}>
+                    <Row>
+                      <Col lg="6">
+                        <div className="mb-3">
+                          <p className="fs-6 fw-medium my-1 ms-1">
+                            PIN (4 digits)
+                          </p>
+                          <input
+                            type="number"
+                            pattern="[0-9]*"
+                            inputMode="numeric"
+                            className="form-control"
+                            value={pinInput}
+                            onChange={(e) =>
+                              setPinInput(parseInt(e.target.value))
+                            }
+                          />
+                        </div>
+                      </Col>
+                      <Col lg="6">
+                        <div className="mb-3">
+                          <p className="fs-6 fw-medium my-1 ms-1">Repeat PIN</p>
+                          <input
+                            type="number"
+                            pattern="[0-9]*"
+                            inputMode="numeric"
+                            className="form-control"
+                            value={repeatPIN}
+                            onChange={(e) =>
+                              setRepeatPIN(parseInt(e.target.value))
+                            }
+                          />
+                        </div>
+                      </Col>
+                    </Row>
+                    <p
+                      className={`text-danger ${
+                        pinValidation ? "d-block" : "d-none"
+                      }`}
+                    >
+                      PIN must be 4-digits only!
+                    </p>
+                    <p
+                      className={`text-danger ${
+                        pinError ? "d-block" : "d-none"
+                      }`}
+                    >
+                      PIN doesn't match!
+                    </p>
+                    <button type="submit" className="primaryBtn">
+                      {userData.TFA ? "Update" : "Save"}
+                    </button>
+                  </form>
+                  <div
+                    className={`alert alert-success mt-3 ${
+                      pinChange ? "d-block" : "d-none"
+                    }`}
+                    role="alert"
+                  >
+                    PIN Changed!
+                  </div>
+                  <div
+                    className={`alert alert-danger mt-3 ${
+                      failedError ? "d-block" : "d-none"
+                    }`}
+                    role="alert"
+                  >
+                    An error occurred. Please try again later.
+                  </div>
+                </Tab>
+              </Tabs>
             </div>
 
             <div className="border-top pt-3 mb-4">
               <div className="col-lg-6">
-                <h6 className="fw-semibold text-danger">
-                  Delete your account:
-                </h6>
+                <h5 className="fw-semibold text-danger">Delete your account</h5>
                 <p className="fw-medium ms-1 mb-2">
                   To confirm, type "{userData.userID}" in the box below
                 </p>
@@ -332,10 +365,7 @@ function Register() {
                 >
                   Type given text correctly
                 </p>
-                <button
-                  onClick={deleteAccount}
-                  className="red_btn my-3 fw-medium w-100"
-                >
+                <button onClick={deleteAccount} className="red_btn mt-3 w-100">
                   Delete
                 </button>
                 <div

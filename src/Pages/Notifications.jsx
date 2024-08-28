@@ -8,7 +8,7 @@ import Notification from "../Components/Notification";
 function Notifications() {
   const [liveData, setLiveData] = useState();
   const myContext = useContext(AppContext);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const userData = myContext.userData;
 
   // Redirect to login if userData is not available
@@ -23,10 +23,23 @@ function Notifications() {
       try {
         if (myContext.loginStatus && userData) {
           const response = await fetch(
-            `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+            `http://${myContext.serverIP}:8000/users?userID=${userData.userID}`
           );
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
           const rawData = await response.json();
           setLiveData(rawData[0]);
+          await fetch(
+            `http://${myContext.serverIP}:8000/users/${rawData[0].id}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ ...rawData[0], isNotification: true }),
+            }
+          );
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -35,6 +48,28 @@ function Notifications() {
 
     fetchUserData();
   }, [myContext.loginStatus, userData, myContext.serverIP]);
+
+  async function readNotification(event) {
+    try {
+      const res = await fetch(
+        `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+      );
+      const liveData = await res.json();
+      await fetch(`http://${myContext.serverIP}:8000/users/${liveData[0].id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...liveData[0],
+          isNotification: false,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  readNotification();
 
   return (
     <Wrapper>
@@ -47,14 +82,17 @@ function Notifications() {
             </div>
 
             <div className="notification_wrapper">
-              {liveData?.notifications.map((item, index) => (
-                <Notification
-                  subject={item.subject}
-                  date={item.date}
-                  content={item.content}
-                  key={index}
-                />
-              ))}
+              {liveData?.notifications
+                .slice()
+                .reverse()
+                .map((item, index) => (
+                  <Notification
+                    subject={item.subject}
+                    date={item.date}
+                    content={item.content}
+                    key={index}
+                  />
+                ))}
             </div>
           </div>
         </Container>
