@@ -394,6 +394,44 @@ a {
 }
 
 .admin_panel {
+  .navbar {
+    background-color: #11212d !important;
+    .navbar-brand {
+      color: #ccd0cf;
+    }
+  }
+  .body {
+    background-color: #06141b;
+    height: 100vh;
+    .transaction_table td,
+    .admin_table td {
+      background-color: transparent;
+      color: #ccd0cf;
+      .more_btn {
+        background-color: transparent;
+        color: #ccd0cf;
+      }
+    }
+    .admin_table th {
+      background-color: transparent;
+      color: #9ba8ab;
+    }
+    .nCard {
+      box-shadow: none;
+      background-color: #11212d !important;
+      h5 {
+        color: #ccd0cf;
+      }
+      .form-control {
+        background-color: #253745;
+        border-color: #4a5c6a !important;
+        color: #ccd0cf;
+        &::placeholder {
+          color: #9ba8ab;
+        }
+      }
+    }
+  }
   .header {
     p {
       font-size: 0.9rem;

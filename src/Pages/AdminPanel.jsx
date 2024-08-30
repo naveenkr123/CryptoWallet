@@ -43,7 +43,7 @@ function AdminPanel() {
       <Navbar
         expand="lg"
         id="loggedin-nav"
-        className={`bg-body-tertiary border-bottom py-2 ${
+        className={`bg-body-tertiary py-2 ${
           myContext.loginStatus ? "d-block" : "d-none"
         }`}
       >
