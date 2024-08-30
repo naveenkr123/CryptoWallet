@@ -8,6 +8,8 @@
       "pin": 1803,
       "TFA": true,
       "admin": false,
+      "status": "active",
+      "lastLogin": "30 Aug 2024",
       "balance": 7,
       "isNotification": false,
       "notifications": [
@@ -117,10 +119,12 @@
       "id": "b0a5",
       "userID": "Johan511",
       "walletAddress": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
-      "password": "abc124",
-      "pin": 1112,
+      "password": "abc123",
+      "pin": 1803,
       "TFA": true,
       "admin": false,
+      "status": "active",
+      "lastLogin": "29 Aug 2024",
       "balance": 5,
       "isNotification": false,
       "transactions": [
@@ -212,8 +216,10 @@
       "pin": 1234,
       "TFA": true,
       "admin": false,
+      "status": "active",
+      "lastLogin": "29 Aug 2024",
       "balance": 4,
-      "isNotification": true,
+      "isNotification": false,
       "transactions": [
         {
           "transactionID": "T1522634370296188",
@@ -241,33 +247,42 @@
       ]
     },
     {
-      "id": "8ec1",
-      "userID": "dddddd",
-      "walletAddress": "p3bBxX7CYKyf3MyY2j4npGg7YU3WdGkl",
-      "password": "dddddd",
+      "id": "f110",
+      "userID": "Shinzo11",
+      "walletAddress": "V1WV1cwoW8xU5frUTrePjH2Naor7F7EW",
+      "password": "abc123",
       "pin": null,
       "TFA": false,
+      "admin": false,
+      "status": "active",
+      "lastLogin": "29 Aug 2024",
       "balance": 5,
       "isNotification": true,
       "transactions": [],
       "notifications": [
         {
           "subject": "Welcome to CryptoWallet",
-          "date": "28 Aug 2024",
-          "content": "Hello dddddd, Welcome to CryptoWallet.\n Make sure you note down your account credentials because there is no account recovery option due to security reasons."
+          "date": "29 Aug 2024",
+          "content": "Hello Shinzo11, Welcome to CryptoWallet.\n Make sure you note down your account credentials because there is no account recovery option due to security reasons."
         },
         {
           "subject": "Security Alert",
-          "date": "28 Aug 2024",
-          "content": "Hello dddddd,\n Ensure you enable the 2FA feature to enhance the security of your account. You will have to enter the PIN each time you are sending CryptoCoins and Login. Please ignore if done already."
+          "date": "29 Aug 2024",
+          "content": "Hello Shinzo11,\n Ensure you enable the 2FA feature to enhance the security of your account. You will have to enter the PIN each time you are sending CryptoCoins and Login. Please ignore if done already."
         }
       ]
     }
   ],
   "admins": [
     {
+      "id": "nk99",
+      "admin": true,
       "adminID": "naveen001",
-      "password": "abc001"
+      "password": "abc001",
+      "walletAddress": "naveen001",
+      "balance": 0,
+      "TFA": true,
+      "pin": 2209
     }
   ]
 }

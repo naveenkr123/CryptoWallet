@@ -7,8 +7,8 @@ import Transactions from "./Pages/Transactions";
 import Settings from "./Pages/Settings";
 import Notifications from "./Pages/Notifications";
 import Wallet from "./Pages/Wallet";
-import Admin from "./Pages/Admin";
 import AdminLogin from "./Pages/AdminLogin";
+import AdminPanel from "./Pages/AdminPanel";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/Notifications" element={<Notifications />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/admin-panel" element={<Admin />} />
+          <Route path="/admin-panel" element={<AdminPanel />} />
           <Route path="/admin-login" element={<AdminLogin />} />
         </Routes>
       </BrowserRouter>

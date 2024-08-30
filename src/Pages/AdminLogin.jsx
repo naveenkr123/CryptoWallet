@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import Wrapper from "../Components/Wrapper";
-import { Col, Container, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import login from "../assets/images/login.svg";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "./AppContext";
+import admin_logo from "../assets/images/admin-panel.png";
 
 function AdminLogin() {
   const [userID, setUserID] = useState("");
@@ -14,6 +12,7 @@ function AdminLogin() {
   const [TFA_active, setTFA_active] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [authError, setAuthError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ function AdminLogin() {
     if (pin === userRecord.pin) {
       myContext.setLoginStatus(true);
       myContext.setUserData(userRecord);
-      navigate("/wallet");
+      navigate("/admin-panel");
     } else {
       setAuthError(true);
     }
@@ -63,48 +62,54 @@ function AdminLogin() {
   }
 
   return (
-    <div
-      className="w-100 bg-dark admin_wrapper py-5 p-md-5"
-      style={{ height: "100vh" }}
-    >
-      <div
-        className="login-div mx-auto border-secondary my-auto pb-5"
-        style={{ width: "300px" }}
-      >
-        <h4 className="text-center text-white fw-bold mb-5">
-          CryptoWallet Admin
-        </h4>
+    <div className="admin_wrapper">
+      <div className="login_card">
+        <img src={admin_logo} alt="admin" />
+        <h5 className="text-center fw-semibold mb-4">CryptoWallet Admin</h5>
 
         <form onSubmit={verifyAccount}>
-          <div className="mb-3">
-            <p className="fs-6 fw-medium text-secondary my-1 ms-1">Admin ID</p>
+          <div className="mb-2">
+            <label htmlFor="loginID">Admin ID</label>
             <input
               value={userID}
               onChange={(e) => setUserID(e.target.value)}
               type="text"
-              className="form-control bg-dark text-light"
+              className="form-control"
               id="loginID"
               aria-describedby="emailHelp"
               placeholder=""
               required
             />
           </div>
-          <div>
-            <p className="fs-6 fw-medium text-secondary my-1 ms-1">Password</p>
+          <label htmlFor="loginPass">Password</label>
+          <div className="position-relative">
             <input
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              className="form-control bg-dark text-light"
+              className="form-control"
               id="loginPass"
               aria-describedby="emailHelp"
               placeholder=""
               required
             />
+            <button
+              type="button"
+              className="eye_btn"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <span class="material-symbols-rounded">visibility</span>
+              ) : (
+                <span class="material-symbols-rounded">visibility_off</span>
+              )}
+            </button>
           </div>
           <button
             type="submit"
-            className="primaryBtn rounded w-100 py-2 px-3 mt-4"
+            className={`primaryBtn rounded w-100 py-2 px-3 mt-4 ${
+              TFA_active ? "d-none" : "d-block"
+            }`}
           >
             Login
           </button>
@@ -117,33 +122,26 @@ function AdminLogin() {
         )}
 
         <form onSubmit={authentication}>
-          <div className={`card mt-4 ${TFA_active ? "d-block" : "d-none"}`}>
-            <div className="card-header">Two-Factor Authentication (2FA)</div>
-            <div className="card-body">
-              <div>
-                <p className="fs-6 fw-medium ms-1 mb-1">PIN</p>
-                <input
-                  value={pin}
-                  onChange={(e) => setPIN(parseInt(e.target.value))}
-                  type="password"
-                  pattern="[0-9]*"
-                  inputMode="numeric"
-                  className="form-control"
-                  id="loginPIN"
-                  required
-                />
-                <p
-                  className={`text-danger m-0 ${
-                    authError ? "d-block" : "d-none"
-                  }`}
-                >
-                  Incorrect PIN
-                </p>
-                <button type="submit" className="btn btn-success mt-4 w-100">
-                  Authenticate
-                </button>
-              </div>
-            </div>
+          <div className={`mt-2 ${TFA_active ? "d-block" : "d-none"}`}>
+            <label>PIN (2FA)</label>
+            <input
+              value={pin}
+              onChange={(e) => setPIN(parseInt(e.target.value))}
+              type="password"
+              pattern="[0-9]*"
+              inputMode="numeric"
+              className="form-control"
+              id="loginPIN"
+              required
+            />
+            <p
+              className={`text-danger m-0 ${authError ? "d-block" : "d-none"}`}
+            >
+              Incorrect PIN
+            </p>
+            <button type="submit" className="btn btn-success mt-3 w-100">
+              Authenticate
+            </button>
           </div>
         </form>
       </div>

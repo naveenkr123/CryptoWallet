@@ -14,14 +14,34 @@ function Login() {
   const [TFA_active, setTFA_active] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [authError, setAuthError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
 
-  function authentication(event) {
+  // Current Date
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString(
+    "default",
+    { month: "short" }
+  )} ${currentDate.getFullYear()}`;
+
+  async function authentication(event) {
     event.preventDefault();
 
     if (pin === userRecord.pin) {
+      // update last login in database
+      await fetch(`http://${myContext.serverIP}:8000/users/${userRecord.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...userRecord,
+          lastLogin: formattedDate,
+        }),
+      });
+
       myContext.setLoginStatus(true);
       myContext.setUserData(userRecord);
       navigate("/wallet");
@@ -44,11 +64,25 @@ function Login() {
       } else {
         const user = userData[0];
         setUserRecord(userData[0]);
-
         if (password === user.password) {
           if (user.TFA) {
             setTFA_active(true);
           } else {
+            // update last login in database
+            await fetch(
+              `http://${myContext.serverIP}:8000/users/${userData[0].id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  ...userData[0],
+                  lastLogin: formattedDate,
+                }),
+              }
+            );
+
             myContext.setLoginStatus(true);
             myContext.setUserData(userData[0]);
             navigate("/wallet");
@@ -89,7 +123,7 @@ function Login() {
 
                   <form onSubmit={verifyAccount}>
                     <div className="mb-3">
-                      <p className="fs-6 fw-medium my-1 ms-1">User ID</p>
+                      <label className="fs-6 fw-medium">User ID</label>
                       <input
                         value={userID}
                         onChange={(e) => setUserID(e.target.value)}
@@ -101,22 +135,41 @@ function Login() {
                         required
                       />
                     </div>
-                    <div>
-                      <p className="fs-6 fw-medium my-1 ms-1">Password</p>
+                    <label htmlFor="loginPass" className="fs-6 fw-medium">
+                      Password
+                    </label>
+                    <div className="position-relative">
                       <input
+                        type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        type="password"
                         className="form-control"
                         id="loginPass"
                         aria-describedby="emailHelp"
                         placeholder="Enter your password"
                         required
                       />
+                      <button
+                        type="button"
+                        className="eye_btn"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <span class="material-symbols-rounded">
+                            visibility
+                          </span>
+                        ) : (
+                          <span class="material-symbols-rounded">
+                            visibility_off
+                          </span>
+                        )}
+                      </button>
                     </div>
                     <button
                       type="submit"
-                      className="primaryBtn rounded w-100 py-2 px-3 mt-4"
+                      className={`primaryBtn rounded w-100 py-2 px-3 mt-4 ${
+                        TFA_active ? "d-none" : "d-block"
+                      }`}
                     >
                       Login
                     </button>
@@ -130,41 +183,32 @@ function Login() {
 
                   <form onSubmit={authentication}>
                     <div
-                      className={`card mt-4 ${
-                        TFA_active ? "d-block" : "d-none"
-                      }`}
+                      className={`mt-3 ${TFA_active ? "d-block" : "d-none"}`}
                     >
-                      <div className="card-header">
-                        Two-Factor Authentication (2FA)
-                      </div>
-                      <div className="card-body">
-                        <div>
-                          <p className="fs-6 fw-medium ms-1 mb-1">PIN</p>
-                          <input
-                            value={pin}
-                            onChange={(e) => setPIN(parseInt(e.target.value))}
-                            type="password"
-                            pattern="[0-9]*"
-                            inputMode="numeric"
-                            className="form-control"
-                            id="loginPIN"
-                            required
-                          />
-                          <p
-                            className={`text-danger m-0 ${
-                              authError ? "d-block" : "d-none"
-                            }`}
-                          >
-                            Incorrect PIN
-                          </p>
-                          <button
-                            type="submit"
-                            className="btn btn-success mt-4 w-100"
-                          >
-                            Authenticate
-                          </button>
-                        </div>
-                      </div>
+                      <label className="fw-medium">PIN (2FA)</label>
+                      <input
+                        value={pin}
+                        onChange={(e) => setPIN(parseInt(e.target.value))}
+                        type="password"
+                        pattern="[0-9]*"
+                        inputMode="numeric"
+                        className="form-control"
+                        id="loginPIN"
+                        required
+                      />
+                      <p
+                        className={`text-danger m-0 ${
+                          authError ? "d-block" : "d-none"
+                        }`}
+                      >
+                        Incorrect PIN
+                      </p>
+                      <button
+                        type="submit"
+                        className="primaryBtn mt-3 py-2 w-100"
+                      >
+                        Authenticate
+                      </button>
                     </div>
                   </form>
 

@@ -54,9 +54,29 @@ function Header() {
           <Link to="/" className="fw-bold navbar-brand">
             CryptoWallet
           </Link>
+
+          <div className="d-flex ms-auto">
+            <NavLink
+              className="nav-link notification_opt d-block d-lg-none"
+              to="/notifications"
+            >
+              {myContext.userData?.isNotification && (
+                <span className="notify_dot"></span>
+              )}
+              <span class="material-symbols-rounded nav_icon me-1">
+                notifications
+              </span>
+            </NavLink>
+            <NavLink className="nav-link d-block d-lg-none" to="/settings">
+              <span class="material-symbols-rounded nav_icon me-1">
+                settings
+              </span>
+            </NavLink>
+          </div>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mx-auto text-center">
+            <Nav className="ms-lg-5 me-auto text-center">
               <NavLink className="nav-link" to="/wallet">
                 Wallet
               </NavLink>
@@ -66,27 +86,26 @@ function Header() {
               <NavLink className="nav-link" to="/transactions">
                 Transactions
               </NavLink>
-              <NavLink
-                className="nav-link notification_opt"
-                to="/notifications"
-              >
-                {myContext.userData?.isNotification && (
-                  <span className="notify_dot"></span>
-                )}
-                Notifications
-              </NavLink>
-              <NavLink className="nav-link" to="/settings">
-                Settings
-              </NavLink>
             </Nav>
-            <div className="d-flex">
-              <button
-                className="red_btn fw-medium py-1 px-3 rounded-pill"
-                onClick={handleReloadClick}
-              >
-                Log Out
-              </button>
-            </div>
+
+            <NavLink
+              className="nav-link notification_opt d-none d-lg-block"
+              to="/notifications"
+            >
+              {myContext.userData?.isNotification && (
+                <span className="notify_dot"></span>
+              )}
+              <span class="material-symbols-rounded nav_icon">
+                notifications
+              </span>
+            </NavLink>
+            <NavLink className="nav-link d-none d-lg-block" to="/settings">
+              <span class="material-symbols-rounded nav_icon">settings</span>
+            </NavLink>
+
+            <button className="red_btn px-3" onClick={handleReloadClick}>
+              <span class="material-symbols-rounded">logout</span> Log Out
+            </button>
           </Navbar.Collapse>
         </Container>
       </Navbar>

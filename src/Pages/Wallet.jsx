@@ -103,17 +103,19 @@ function Wallet() {
             <div className="d-flex justify-content-center center gap-3">
               <Link to="/transfer">
                 <button
-                  className="btn btn-dark bg-black border-0 px-3 rounded-pill"
+                  className="btn btn-dark bg-black btn-sm d-flex align-content-center justify-content-center text-decoration-none border-0 px-3 rounded-pill"
                   style={{
                     backgroundColor: "#13aa52",
                     border: "1px solid #13aa52",
                   }}
                 >
+                  <span class="material-symbols-rounded">north_east</span>{" "}
                   Transfer BTC
                 </button>
               </Link>
               <Link to="/transactions">
-                <button className="btn btn-dark bg-light text-black border-light px-3 rounded-pill">
+                <button className="btn btn-dark btn-sm bg-light d-flex align-content-center justify-content-center text-black border-light px-3 rounded-pill">
+                  <span class="material-symbols-rounded">swap_vert</span>{" "}
                   Transactions
                 </button>
               </Link>
@@ -164,10 +166,11 @@ function Wallet() {
             </div>
             <div className="mx-auto" style={{ width: "fit-content" }}>
               <button
-                className="btn btn-primary btn-sm"
+                className="btn btn-primary btn-sm d-flex align-items-center justify-content-center"
                 onClick={downloadQRCode}
               >
-                Download QR
+                <span class="material-symbols-rounded">download</span> Download
+                QR
               </button>
             </div>
 

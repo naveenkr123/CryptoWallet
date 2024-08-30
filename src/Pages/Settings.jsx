@@ -3,8 +3,6 @@ import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row, Tab, Tabs } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { AppContext } from "./AppContext";
-import view from "../assets/images/view.png";
-import hide from "../assets/images/hide.png";
 
 function Register() {
   const [currentPass, setCurrentPass] = useState("");
@@ -201,7 +199,15 @@ function Register() {
                           className="eye_btn"
                           onClick={() => setShowPassword(!showPassword)}
                         >
-                          <img src={showPassword ? hide : view} alt="icon" />
+                          {showPassword ? (
+                            <span class="material-symbols-rounded">
+                              visibility
+                            </span>
+                          ) : (
+                            <span class="material-symbols-rounded">
+                              visibility_off
+                            </span>
+                          )}
                         </button>
                       </div>
                       <p
