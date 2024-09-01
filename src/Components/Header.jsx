@@ -95,7 +95,7 @@ function Header() {
               {myContext.userData?.isNotification && (
                 <span className="notify_dot"></span>
               )}
-              <span class="material-symbols-rounded nav_icon">
+              <span class="material-symbols-rounded nav_icon me-1">
                 notifications
               </span>
             </NavLink>

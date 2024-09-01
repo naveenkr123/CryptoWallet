@@ -139,7 +139,7 @@ function AdminLogin() {
             >
               Incorrect PIN
             </p>
-            <button type="submit" className="btn btn-success mt-3 w-100">
+            <button type="submit" className="primaryBtn py-2 mt-3 w-100">
               Authenticate
             </button>
           </div>
