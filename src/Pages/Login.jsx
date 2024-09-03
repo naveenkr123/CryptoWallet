@@ -19,12 +19,21 @@ function Login() {
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
 
-  // Current Date
+  // Current Date in IST (Indian Standard Time)
   const currentDate = new Date();
-  const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString(
-    "default",
-    { month: "short" }
-  )} ${currentDate.getFullYear()}`;
+  // Format the date and time in IST
+  const options = {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  };
+  // Format the date and time together
+  const formattedDateTime = currentDate.toLocaleString("en-IN", options);
 
   async function authentication(event) {
     event.preventDefault();
@@ -38,7 +47,7 @@ function Login() {
         },
         body: JSON.stringify({
           ...userRecord,
-          lastLogin: formattedDate,
+          lastLogin: formattedDateTime,
         }),
       });
 
@@ -78,7 +87,7 @@ function Login() {
                 },
                 body: JSON.stringify({
                   ...userData[0],
-                  lastLogin: formattedDate,
+                  lastLogin: formattedDateTime,
                 }),
               }
             );

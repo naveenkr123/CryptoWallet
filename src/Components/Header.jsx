@@ -12,6 +12,8 @@ function Header() {
     window.location.reload();
   };
 
+  const firstLetter = myContext.userData?.userID?.charAt(0).toUpperCase() || "";
+
   return (
     <>
       <Navbar
@@ -55,11 +57,8 @@ function Header() {
             CryptoWallet
           </Link>
 
-          <div className="d-flex ms-auto">
-            <NavLink
-              className="nav-link notification_opt d-block d-lg-none"
-              to="/notifications"
-            >
+          <div className="d-flex d-block d-lg-none ms-auto">
+            <NavLink className="nav-link notification_opt" to="/notifications">
               {myContext.userData?.isNotification && (
                 <span className="notify_dot"></span>
               )}
@@ -67,11 +66,12 @@ function Header() {
                 notifications
               </span>
             </NavLink>
-            <NavLink className="nav-link d-block d-lg-none" to="/settings">
+            <NavLink className="nav-link" to="/settings">
               <span class="material-symbols-rounded nav_icon me-1">
                 settings
               </span>
             </NavLink>
+            <button className="nav_avatar my-auto">{firstLetter}</button>
           </div>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -88,20 +88,29 @@ function Header() {
               </NavLink>
             </Nav>
 
-            <NavLink
-              className="nav-link notification_opt d-none d-lg-block"
-              to="/notifications"
-            >
-              {myContext.userData?.isNotification && (
-                <span className="notify_dot"></span>
-              )}
-              <span class="material-symbols-rounded nav_icon me-1">
-                notifications
-              </span>
-            </NavLink>
-            <NavLink className="nav-link d-none d-lg-block" to="/settings">
-              <span class="material-symbols-rounded nav_icon">settings</span>
-            </NavLink>
+            <div className="d-none d-lg-block">
+              <div className="d-flex">
+                <NavLink
+                  className="nav-link notification_opt"
+                  to="/notifications"
+                >
+                  {myContext.userData?.isNotification && (
+                    <span className="notify_dot"></span>
+                  )}
+                  <span class="material-symbols-rounded nav_icon me-2">
+                    notifications
+                  </span>
+                </NavLink>
+                <NavLink className="nav-link" to="/settings">
+                  <span class="material-symbols-rounded nav_icon">
+                    settings
+                  </span>
+                </NavLink>
+                <button className="nav_avatar me-4 my-auto">
+                  {firstLetter}
+                </button>
+              </div>
+            </div>
 
             <button className="red_btn px-3" onClick={handleReloadClick}>
               <span class="material-symbols-rounded">logout</span> Log Out

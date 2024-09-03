@@ -1,16 +1,26 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Container, Dropdown } from "react-bootstrap";
+import { Container, Dropdown, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { AppContext } from "./AppContext";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
+import avatar from "../assets/images/user.png";
 
 function AdminPanel() {
   const [data, setData] = useState();
   const [searchUID, setSearchUID] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
   const adminData = myContext.userData;
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
 
   useEffect(() => {
     if (!adminData || !myContext.loginStatus) {
@@ -29,13 +39,17 @@ function AdminPanel() {
       console.log(err);
     }
   }, [adminData.admin, myContext.loginStatus, myContext.serverIP]);
-
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   const handleReloadClick = () => {
     window.location.reload();
+  };
+
+  const handleViewCredentials = (user) => {
+    setSelectedUser(user);
+    handleShow2();
   };
 
   return (
@@ -51,10 +65,17 @@ function AdminPanel() {
           <Link to="/" className="fw-bold navbar-brand">
             CryptoWallet Admin
           </Link>
-          <span>AD</span>
-          <button onClick={handleReloadClick} className="red_btn px-3 ms-auto">
-            <span class="material-symbols-rounded">logout</span>Log Out
-          </button>
+          <div className="d-flex">
+            <button onClick={handleShow} className="nav_avatar me-4">
+              AD
+            </button>
+            <button
+              onClick={handleReloadClick}
+              className="red_btn px-3 ms-auto"
+            >
+              <span class="material-symbols-rounded">logout</span>Log Out
+            </button>
+          </div>
         </Container>
       </Navbar>
 
@@ -64,7 +85,7 @@ function AdminPanel() {
             <div className="header">
               <h5 className="m-0">User Management</h5>
               <p>Manage CryptoWallet user accounts</p>
-              <div className="d-flex flex-column flex-md-row gap-2 justify-content-between mt-4 mb-2">
+              <div className="d-flex flex-column flex-md-row gap-2 gap-lg-3 justify-content-between mt-4 mb-2">
                 <input
                   type="text"
                   className="form-control border-secondary"
@@ -72,6 +93,15 @@ function AdminPanel() {
                   value={searchUID}
                   onChange={(e) => setSearchUID(e.target.value)}
                 />
+                <button
+                  className="primaryBtn px-3 ms-auto"
+                  onClick={() => fetchData()}
+                >
+                  <span class="material-symbols-rounded">
+                    notifications_active
+                  </span>
+                  Send Notification
+                </button>
                 <button className="primaryBtn px-3" onClick={() => fetchData()}>
                   <span class="material-symbols-rounded">refresh</span>
                   Refresh
@@ -124,35 +154,37 @@ function AdminPanel() {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                              <Dropdown.Item href="#/action-3">
+                              <Dropdown.Item>
                                 <span class="material-symbols-outlined">
                                   lock
                                 </span>
                                 Reset Password
                               </Dropdown.Item>
-                              <Dropdown.Item href="#/action-1">
+                              <Dropdown.Item>
                                 <span class="material-symbols-outlined">
                                   notifications
                                 </span>
                                 Send Notification
                               </Dropdown.Item>
-                              <Dropdown.Item href="#/action-2">
+                              <Dropdown.Item>
                                 <span class="material-symbols-outlined">
                                   block
                                 </span>
                                 Suspend Account
                               </Dropdown.Item>
-                              <Dropdown.Item href="#/action-2">
+                              <Dropdown.Item>
                                 <span class="material-symbols-outlined">
                                   delete
                                 </span>
                                 Delete Account
                               </Dropdown.Item>
-                              <Dropdown.Item href="#/action-2">
+                              <Dropdown.Item
+                                onClick={() => handleViewCredentials(item)}
+                              >
                                 <span class="material-symbols-outlined">
-                                  key
+                                  account_circle
                                 </span>
-                                View Credentials
+                                View Details
                               </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
@@ -165,6 +197,83 @@ function AdminPanel() {
           </div>
         </Container>
       </div>
+
+      <Modal
+        className="adminPanelModal"
+        show={show}
+        onHide={handleClose}
+        centered
+      >
+        <Modal.Body>
+          <div className="d-flex">
+            <img src={avatar} className="mx-auto" alt="img" height={"80px"} />
+          </div>
+          <div className="adminDetails">
+            <h5>{adminData.adminID}</h5>
+            <p>{adminData.walletAddress}</p>
+
+            <div className="d-flex align-items-center justify-content-center">
+              <span class="material-symbols-outlined">currency_bitcoin</span>
+              <h1 className="m-0">{adminData.balance}</h1>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        className="adminPanelModal"
+        show={show2}
+        onHide={handleClose2}
+        centered
+      >
+        <Modal.Body>
+          <h6>User Details</h6>
+          <div className="d-flex py-4">
+            <img src={avatar} className="mx-auto" alt="img" height={"80px"} />
+          </div>
+
+          {selectedUser && (
+            <div className="userDetails">
+              <table>
+                <tr>
+                  <td className="label">User ID</td>
+                  <td>{selectedUser?.userID}</td>
+                </tr>
+                <tr>
+                  <td className="label">Wallet Address</td>
+                  <td>{selectedUser?.walletAddress}</td>
+                </tr>
+                <tr>
+                  <td className="label">Balance (BTC)</td>
+                  <td>{selectedUser?.balance}</td>
+                </tr>
+                <tr>
+                  <td className="label">2FA</td>
+                  <td>{selectedUser?.TFA ? "Enabled" : "Disabled"}</td>
+                </tr>
+                <tr>
+                  <td className="label">Status</td>
+                  <td style={{ color: "rgb(34, 255, 0)" }}>
+                    {selectedUser?.status}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="label">Role</td>
+                  <td>{selectedUser?.role}</td>
+                </tr>
+                <tr>
+                  <td className="label">Joining Date</td>
+                  <td>{selectedUser?.joiningDate}</td>
+                </tr>
+                <tr>
+                  <td className="label">Last Login</td>
+                  <td>{selectedUser?.lastLogin}</td>
+                </tr>
+              </table>
+            </div>
+          )}
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
