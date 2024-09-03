@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Container, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { AppContext } from "./AppContext";
@@ -18,7 +18,7 @@ function AdminPanel() {
     }
   }, [adminData, myContext, navigate]);
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     try {
       if (myContext.loginStatus && adminData.admin) {
         const response = await fetch(`http://${myContext.serverIP}:8000/users`);
@@ -28,11 +28,11 @@ function AdminPanel() {
     } catch (err) {
       console.log(err);
     }
-  }
+  }, [adminData.admin, myContext.loginStatus, myContext.serverIP]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleReloadClick = () => {
     window.location.reload();
