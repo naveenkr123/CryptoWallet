@@ -25,20 +25,16 @@ function Register() {
 
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
-  const userData = myContext.userData;
-  // console.log("context", myContext);
+  const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
 
   // Redirect to login if userData is not available
   useEffect(() => {
-    if (!userData || !myContext.loginStatus) {
+    const isAuthenticated =
+      sessionStorage.getItem("isAuthenticated") === "true";
+    if (!isAuthenticated) {
       navigate("/login");
     }
-  }, [userData, myContext, navigate]);
-
-  // Render loading or nothing until redirected
-  if (!userData || !myContext.loginStatus) {
-    return null;
-  }
+  }, [navigate]);
 
   async function changePassword(event) {
     event.preventDefault();
@@ -141,12 +137,9 @@ function Register() {
 
   function deleteAccount() {
     if (deletionConfirm === userData.userID) {
-      fetch(
-        `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`,
-        {
-          method: "DELETE",
-        }
-      )
+      fetch(`http://${myContext.serverIP}:8000/users/${userData.id}`, {
+        method: "DELETE",
+      })
         .then((response) => {
           if (!response.ok) {
             setFailedError(true);

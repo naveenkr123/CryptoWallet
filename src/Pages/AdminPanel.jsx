@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Container, Dropdown, Modal } from "react-bootstrap";
+import { Col, Container, Dropdown, Modal, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { AppContext } from "./AppContext";
 import Navbar from "react-bootstrap/Navbar";
@@ -12,44 +12,45 @@ function AdminPanel() {
   const [selectedUser, setSelectedUser] = useState(null);
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
-  const adminData = myContext.userData;
+  const adminData = JSON.parse(sessionStorage.getItem("userData")) || "";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
 
   useEffect(() => {
-    if (!adminData || !myContext.loginStatus) {
+    const isAuthenticated =
+      sessionStorage.getItem("isAuthenticated") === "true";
+    if (!isAuthenticated) {
       navigate("/admin-login");
     }
-  }, [adminData, myContext, navigate]);
+  }, [navigate]);
 
   const fetchData = useCallback(async () => {
     try {
-      if (myContext.loginStatus && adminData.admin) {
-        const response = await fetch(`http://${myContext.serverIP}:8000/users`);
-        const rawData = await response.json();
-        setData(rawData);
-      }
+      const response = await fetch(`http://${myContext.serverIP}:8000/users`);
+      const rawData = await response.json();
+      setData(rawData);
     } catch (err) {
       console.log(err);
     }
-  }, [adminData.admin, myContext.loginStatus, myContext.serverIP]);
+  }, [myContext]);
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const handleReloadClick = () => {
-    window.location.reload();
-  };
-
   const handleViewCredentials = (user) => {
     setSelectedUser(user);
     handleShow2();
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("userData");
+    sessionStorage.removeItem("isAuthenticated");
+    navigate("/admin-login");
   };
 
   return (
@@ -57,9 +58,7 @@ function AdminPanel() {
       <Navbar
         expand="lg"
         id="loggedin-nav"
-        className={`bg-body-tertiary py-2 ${
-          myContext.loginStatus ? "d-block" : "d-none"
-        }`}
+        className={`bg-body-tertiary py-2 ${adminData ? "d-block" : "d-none"}`}
       >
         <Container>
           <Link to="/" className="fw-bold navbar-brand">
@@ -69,10 +68,7 @@ function AdminPanel() {
             <button onClick={handleShow} className="nav_avatar me-4">
               AD
             </button>
-            <button
-              onClick={handleReloadClick}
-              className="red_btn px-3 ms-auto"
-            >
+            <button onClick={handleLogout} className="red_btn px-3 ms-auto">
               <span class="material-symbols-rounded">logout</span>Log Out
             </button>
           </div>
@@ -82,7 +78,7 @@ function AdminPanel() {
       <div className="body pt-4">
         <Container>
           <div className="nCard px-3 px-md-4">
-            <div className="header">
+            <div className="header mb-4">
               <h5 className="m-0">User Management</h5>
               <p>Manage CryptoWallet user accounts</p>
               <div className="d-flex flex-column flex-md-row gap-2 gap-lg-3 justify-content-between mt-4 mb-2">
@@ -225,51 +221,61 @@ function AdminPanel() {
         show={show2}
         onHide={handleClose2}
         centered
+        size="sm"
       >
         <Modal.Body>
-          <h6>User Details</h6>
-          <div className="d-flex py-4">
+          <h6 className="text-center">User Details</h6>
+          <div className="d-flex py-3">
             <img src={avatar} className="mx-auto" alt="img" height={"80px"} />
+          </div>
+
+          <div className="topBox">
+            <h6>{selectedUser?.userID}</h6>
+            <p>{selectedUser?.walletAddress}</p>
           </div>
 
           {selectedUser && (
             <div className="userDetails">
-              <table>
-                <tr>
-                  <td className="label">User ID</td>
-                  <td>{selectedUser?.userID}</td>
-                </tr>
-                <tr>
-                  <td className="label">Wallet Address</td>
-                  <td>{selectedUser?.walletAddress}</td>
-                </tr>
-                <tr>
-                  <td className="label">Balance (BTC)</td>
-                  <td>{selectedUser?.balance}</td>
-                </tr>
-                <tr>
-                  <td className="label">2FA</td>
-                  <td>{selectedUser?.TFA ? "Enabled" : "Disabled"}</td>
-                </tr>
-                <tr>
-                  <td className="label">Status</td>
-                  <td style={{ color: "rgb(34, 255, 0)" }}>
-                    {selectedUser?.status}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="label">Role</td>
-                  <td>{selectedUser?.role}</td>
-                </tr>
-                <tr>
-                  <td className="label">Joining Date</td>
-                  <td>{selectedUser?.joiningDate}</td>
-                </tr>
-                <tr>
-                  <td className="label">Last Login</td>
-                  <td>{selectedUser?.lastLogin}</td>
-                </tr>
-              </table>
+              <Row>
+                <Col xs={6}>
+                  <div className="dataBox">
+                    <label>Balance (BTC)</label>
+                    <span>{selectedUser?.balance}</span>
+                  </div>
+                </Col>
+                <Col xs={6}>
+                  <div className="dataBox">
+                    <label>2FA</label>
+                    <span>{selectedUser?.TFA ? "Enabled" : "Disabled"}</span>
+                  </div>
+                </Col>
+                <Col xs={6}>
+                  <div className="dataBox">
+                    <label>Status</label>
+                    <span style={{ color: "rgb(34, 255, 0)" }}>
+                      {selectedUser?.status}
+                    </span>
+                  </div>
+                </Col>
+                <Col xs={6}>
+                  <div className="dataBox">
+                    <label>Role</label>
+                    <span>{selectedUser?.role}</span>
+                  </div>
+                </Col>
+                <Col xs={6}>
+                  <div className="dataBox">
+                    <label>Joining Date</label>
+                    <span>{selectedUser?.joiningDate}</span>
+                  </div>
+                </Col>
+                <Col xs={6}>
+                  <div className="dataBox">
+                    <label>Last Login</label>
+                    <span>{selectedUser?.lastLogin}</span>
+                  </div>
+                </Col>
+              </Row>
             </div>
           )}
         </Modal.Body>

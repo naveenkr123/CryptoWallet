@@ -1,18 +1,20 @@
-import { useContext } from "react";
 import { Container } from "react-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, NavLink } from "react-router-dom";
-import { AppContext } from "../Pages/AppContext";
+import { useNavigate } from "react-router";
 
 function Header() {
-  const myContext = useContext(AppContext);
+  const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
+  const isAuthenticated = sessionStorage.getItem("isAuthenticated") === "true";
+  const firstLetter = userData?.userID?.charAt(0).toUpperCase() || "";
+  const navigate = useNavigate();
 
-  const handleReloadClick = () => {
-    window.location.reload();
+  const handleLogout = () => {
+    sessionStorage.removeItem("userData");
+    sessionStorage.removeItem("isAuthenticated");
+    navigate("/login");
   };
-
-  const firstLetter = myContext.userData?.userID?.charAt(0).toUpperCase() || "";
 
   return (
     <>
@@ -20,7 +22,7 @@ function Header() {
         expand="lg"
         id="default-nav"
         className={`bg-body-tertiary py-2 border ${
-          myContext.loginStatus ? "d-none" : "d-block"
+          isAuthenticated ? "d-none" : "d-block"
         }`}
       >
         <Container>
@@ -49,7 +51,7 @@ function Header() {
         expand="lg"
         id="loggedin-nav"
         className={`bg-body-tertiary border-bottom py-2 ${
-          myContext.loginStatus ? "d-block" : "d-none"
+          isAuthenticated ? "d-block" : "d-none"
         }`}
       >
         <Container>
@@ -59,9 +61,7 @@ function Header() {
 
           <div className="d-flex d-block d-lg-none ms-auto">
             <NavLink className="nav-link notification_opt" to="/notifications">
-              {myContext.userData?.isNotification && (
-                <span className="notify_dot"></span>
-              )}
+              {userData?.isNotification && <span className="notify_dot"></span>}
               <span class="material-symbols-rounded nav_icon me-1">
                 notifications
               </span>
@@ -94,7 +94,7 @@ function Header() {
                   className="nav-link notification_opt"
                   to="/notifications"
                 >
-                  {myContext.userData?.isNotification && (
+                  {userData?.isNotification && (
                     <span className="notify_dot"></span>
                   )}
                   <span class="material-symbols-rounded nav_icon me-2">
@@ -112,7 +112,7 @@ function Header() {
               </div>
             </div>
 
-            <button className="red_btn px-3" onClick={handleReloadClick}>
+            <button className="red_btn px-3" onClick={handleLogout}>
               <span class="material-symbols-rounded">logout</span> Log Out
             </button>
           </Navbar.Collapse>

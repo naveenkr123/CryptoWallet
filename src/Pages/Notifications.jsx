@@ -7,21 +7,24 @@ import Notification from "../Components/Notification";
 
 function Notifications() {
   const [liveData, setLiveData] = useState();
+  const [dataLoaded, setDataLoaded] = useState(false); // Flag for data loading
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
-  const userData = myContext.userData;
+  const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
 
   // Redirect to login if userData is not available
   useEffect(() => {
-    if (!userData || !myContext.loginStatus) {
+    const isAuthenticated =
+      sessionStorage.getItem("isAuthenticated") === "true";
+    if (!isAuthenticated) {
       navigate("/login");
     }
-  }, [userData, myContext, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
-    async function fetchUserData() {
-      try {
-        if (myContext.loginStatus && userData) {
+    if (!dataLoaded) {
+      async function fetchUserData() {
+        try {
           const response = await fetch(
             `http://${myContext.serverIP}:8000/users?userID=${userData.userID}`
           );
@@ -40,36 +43,45 @@ function Notifications() {
               body: JSON.stringify({ ...rawData[0], isNotification: true }),
             }
           );
+          setDataLoaded(true); // Set flag to true once data is loaded
+        } catch (error) {
+          console.error("Error fetching user data:", error);
         }
+      }
+
+      fetchUserData();
+    }
+  }, [userData, myContext.serverIP, dataLoaded]); // Include dataLoaded in dependencies
+
+  useEffect(() => {
+    async function readNotification() {
+      try {
+        const res = await fetch(
+          `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+        );
+        const liveData = await res.json();
+        await fetch(
+          `http://${myContext.serverIP}:8000/users/${liveData[0].id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...liveData[0],
+              isNotification: false,
+            }),
+          }
+        );
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.log(error);
       }
     }
 
-    fetchUserData();
-  }, [myContext.loginStatus, userData, myContext.serverIP]);
-
-  async function readNotification(event) {
-    try {
-      const res = await fetch(
-        `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
-      );
-      const liveData = await res.json();
-      await fetch(`http://${myContext.serverIP}:8000/users/${liveData[0].id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...liveData[0],
-          isNotification: false,
-        }),
-      });
-    } catch (error) {
-      console.log(error);
+    if (userData) {
+      readNotification();
     }
-  }
-  readNotification();
+  }, [userData, myContext.serverIP]); // Run when dependencies change
 
   return (
     <Wrapper>

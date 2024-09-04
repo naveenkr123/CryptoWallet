@@ -51,8 +51,8 @@ function Login() {
         }),
       });
 
-      myContext.setLoginStatus(true);
-      myContext.setUserData(userRecord);
+      sessionStorage.setItem("userData", JSON.stringify(userRecord));
+      sessionStorage.setItem("isAuthenticated", "true");
       navigate("/wallet");
     } else {
       setAuthError(true);
@@ -92,8 +92,8 @@ function Login() {
               }
             );
 
-            myContext.setLoginStatus(true);
-            myContext.setUserData(userData[0]);
+            sessionStorage.setItem("userData", JSON.stringify(userData[0]));
+            sessionStorage.setItem("isAuthenticated", "true");
             navigate("/wallet");
           }
         } else {

@@ -21,8 +21,8 @@ function AdminLogin() {
     event.preventDefault();
 
     if (pin === userRecord.pin) {
-      myContext.setLoginStatus(true);
-      myContext.setUserData(userRecord);
+      sessionStorage.setItem("userData", JSON.stringify(userRecord));
+      sessionStorage.setItem("isAuthenticated", "true");
       navigate("/admin-panel");
     } else {
       setAuthError(true);
@@ -48,8 +48,8 @@ function AdminLogin() {
           if (user.TFA) {
             setTFA_active(true);
           } else {
-            myContext.setLoginStatus(true);
-            myContext.setUserData(userData[0]);
+            sessionStorage.setItem("userData", JSON.stringify(userData[0]));
+            sessionStorage.setItem("isAuthenticated", "true");
             navigate("/admin-panel");
           }
         } else {

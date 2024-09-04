@@ -15,6 +15,7 @@ function generateRandomString() {
 }
 
 function Transfer() {
+  const myContext = useContext(AppContext);
   const [wallet_address, setWallet_address] = useState("");
   const [sameWA, setSameWA] = useState(false);
   const [errorWA, setErrorWA] = useState(false);
@@ -23,22 +24,17 @@ function Transfer() {
   const [transferMSG, setTransferMSG] = useState(false);
   const [amount, setAmount] = useState("");
 
-  const myContext = useContext(AppContext);
   const navigate = useNavigate();
-  const userData = myContext.userData;
-  // console.log("context", myContext);
+  const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
 
   // Redirect to login if userData is not available
   useEffect(() => {
-    if (!userData || !myContext.loginStatus) {
+    const isAuthenticated =
+      sessionStorage.getItem("isAuthenticated") === "true";
+    if (!isAuthenticated) {
       navigate("/login");
     }
-  }, [userData, myContext, navigate]);
-
-  // Render loading or nothing until redirected
-  if (!userData || !myContext.loginStatus) {
-    return null;
-  }
+  }, [navigate]);
 
   // Current Date
   const currentDate = new Date();
@@ -65,9 +61,7 @@ function Transfer() {
     try {
       // Fetch sender and recipient data concurrently
       const [senderResponse, recipientResponse] = await Promise.all([
-        fetch(
-          `http://${myContext.serverIP}:8000/users/${myContext.userData.id}`
-        ),
+        fetch(`http://${myContext.serverIP}:8000/users/${userData.id}`),
         fetch(
           `http://${myContext.serverIP}:8000/users?walletAddress=${wallet_address}`
         ),

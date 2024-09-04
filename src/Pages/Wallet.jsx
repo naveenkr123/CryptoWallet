@@ -12,47 +12,42 @@ function Wallet() {
   const [balance, setBalance] = useState("");
   const qrCodeRef = useRef(null);
   const myContext = useContext(AppContext);
-  const navigate = useNavigate(); // Initialize useNavigate
-  const userData = myContext.userData;
+  const navigate = useNavigate();
+  const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
 
   // Redirect to login if userData is not available
   useEffect(() => {
-    if (!userData || !myContext.loginStatus) {
+    const isAuthenticated =
+      sessionStorage.getItem("isAuthenticated") === "true";
+    if (!isAuthenticated) {
       navigate("/login");
     }
-  }, [userData, myContext, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
     async function fetchUserData() {
       try {
-        if (myContext.loginStatus && userData) {
-          const response = await fetch(
-            `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
-          );
-          const userData2 = await response.json();
-          setBalance(userData2[0].balance);
-        }
+        const response = await fetch(
+          `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+        );
+        const userData2 = await response.json();
+        setBalance(userData2[0].balance);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     }
 
     fetchUserData();
-  }, [myContext.loginStatus, userData, myContext.serverIP]);
-
-  // Render loading or nothing until redirected
-  if (!userData || !myContext.loginStatus) {
-    return null;
-  }
+  }, [userData, myContext.serverIP]);
 
   function copyAddress() {
-    navigator.clipboard.writeText(myContext.userData.walletAddress);
+    navigator.clipboard.writeText(userData.walletAddress);
     document.getElementById("copy_btn").innerHTML = "Copied!";
     document.getElementById("copy_btn").style.color = "green";
   }
 
   function copyID() {
-    navigator.clipboard.writeText(myContext.userData.userID);
+    navigator.clipboard.writeText(userData.userID);
     document.getElementById("copy_btn_id").innerHTML = "Copied!";
     document.getElementById("copy_btn_id").style.color = "green";
   }
@@ -134,7 +129,7 @@ function Wallet() {
                 Copy
               </button>
               <h6 id="user_id" className="m-0 fw-normal">
-                {myContext.userData.userID}
+                {userData.userID}
               </h6>
             </div>
             <p className="m-0 fw-medium mb-1">Crypto Address: </p>
@@ -150,7 +145,7 @@ function Wallet() {
                 Copy
               </button>
               <h6 id="wallet_address" className="m-0 fw-normal">
-                {myContext.userData.walletAddress}
+                {userData.walletAddress}
               </h6>
             </div>
 
@@ -160,7 +155,7 @@ function Wallet() {
               ref={qrCodeRef}
             >
               <QRCode
-                value={myContext.userData.walletAddress}
+                value={userData.walletAddress}
                 style={{ width: "100%", height: "100%" }}
               />
             </div>

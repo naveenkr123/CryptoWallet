@@ -10,34 +10,38 @@ function Transactions() {
   const [liveData, setLiveData] = useState();
   const [filterType, setFilterType] = useState("all");
   const [searchTxnID, setSearchTxnID] = useState("");
+  const [dataLoaded, setDataLoaded] = useState(false); // Flag for data loading
+
   const myContext = useContext(AppContext);
   const navigate = useNavigate();
-  const userData = myContext.userData;
+  const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
 
-  // Redirect to login if userData is not available
   useEffect(() => {
-    if (!userData || !myContext.loginStatus) {
+    const isAuthenticated =
+      sessionStorage.getItem("isAuthenticated") === "true";
+    if (!isAuthenticated) {
       navigate("/login");
     }
-  }, [userData, myContext, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
-    async function fetchUserData() {
-      try {
-        if (myContext.loginStatus && userData) {
+    if (!dataLoaded) {
+      async function fetchUserData() {
+        try {
           const response = await fetch(
             `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
           );
           const rawData = await response.json();
           setLiveData(rawData[0]);
+          setDataLoaded(true); // Set flag to true once data is loaded
+        } catch (error) {
+          console.error("Error fetching user data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
       }
-    }
 
-    fetchUserData();
-  }, [myContext.loginStatus, userData, myContext.serverIP]);
+      fetchUserData();
+    }
+  }, [userData, myContext.serverIP, dataLoaded]);
 
   const handleFilterChange = (event) => {
     const value = event.target.value;
