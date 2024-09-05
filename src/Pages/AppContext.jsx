@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [serverIP, setServerIP] = useState("10.5.51.182");
+  const [serverIP, setServerIP] = useState("192.168.1.3");
 
   return (
     <AppContext.Provider

@@ -4,14 +4,11 @@ import { Container } from "react-bootstrap";
 import QRCode from "qrcode.react";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
-import { useContext } from "react";
-import { AppContext } from "./AppContext";
 import { Link } from "react-router-dom";
 
 function Wallet() {
   const [balance, setBalance] = useState("");
   const qrCodeRef = useRef(null);
-  const myContext = useContext(AppContext);
   const navigate = useNavigate();
   const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
 
@@ -28,7 +25,7 @@ function Wallet() {
     async function fetchUserData() {
       try {
         const response = await fetch(
-          `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+          `${process.env.REACT_APP_ALL_USERS_DATA}?walletAddress=${userData.walletAddress}`
         );
         const userData2 = await response.json();
         setBalance(userData2[0].balance);
@@ -38,7 +35,7 @@ function Wallet() {
     }
 
     fetchUserData();
-  }, [userData, myContext.serverIP]);
+  }, [userData]);
 
   function copyAddress() {
     navigator.clipboard.writeText(userData.walletAddress);

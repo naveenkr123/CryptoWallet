@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row } from "react-bootstrap";
 import tImg from "../assets/images/transfer.svg";
 import { useNavigate } from "react-router";
-import { AppContext } from "./AppContext";
 
 function generateRandomString() {
   const characters = "0123456789";
@@ -15,7 +14,6 @@ function generateRandomString() {
 }
 
 function Transfer() {
-  const myContext = useContext(AppContext);
   const [wallet_address, setWallet_address] = useState("");
   const [sameWA, setSameWA] = useState(false);
   const [errorWA, setErrorWA] = useState(false);
@@ -23,6 +21,7 @@ function Transfer() {
   const [balanceError, setBalanceError] = useState(false);
   const [transferMSG, setTransferMSG] = useState(false);
   const [amount, setAmount] = useState("");
+  const url = process.env.REACT_APP_ALL_USERS_DATA;
 
   const navigate = useNavigate();
   const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
@@ -61,10 +60,8 @@ function Transfer() {
     try {
       // Fetch sender and recipient data concurrently
       const [senderResponse, recipientResponse] = await Promise.all([
-        fetch(`http://${myContext.serverIP}:8000/users/${userData.id}`),
-        fetch(
-          `http://${myContext.serverIP}:8000/users?walletAddress=${wallet_address}`
-        ),
+        fetch(`${url}/${userData.id}`),
+        fetch(`${url}/?walletAddress=${wallet_address}`),
       ]);
 
       const senderData = await senderResponse.json();
@@ -118,7 +115,7 @@ function Transfer() {
 
       // Perform debit and credit operations concurrently
       const [senderPutResponse, recipientPutResponse] = await Promise.all([
-        fetch(`http://${myContext.serverIP}:8000/users/${senderData.id}`, {
+        fetch(`${url}/${senderData.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -129,20 +126,17 @@ function Transfer() {
             transactions: updatedSenderTransactions,
           }),
         }),
-        fetch(
-          `http://${myContext.serverIP}:8000/users/${recipientData[0].id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              ...recipientData[0],
-              balance: recipientData[0].balance + amount,
-              transactions: updatedRecipientTransactions,
-            }),
-          }
-        ),
+        fetch(`${url}/${recipientData[0].id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...recipientData[0],
+            balance: recipientData[0].balance + amount,
+            transactions: updatedRecipientTransactions,
+          }),
+        }),
       ]);
 
       if (senderPutResponse.ok && recipientPutResponse.ok) {
@@ -152,20 +146,17 @@ function Transfer() {
         console.error("Error: Transfer failed, reverting...");
 
         // Revert sender balance and transactions
-        await fetch(
-          `http://${myContext.serverIP}:8000/users/${senderData.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              ...senderData,
-              balance: senderData.balance,
-              transactions: senderData.transactions, // Revert to original transactions
-            }),
-          }
-        );
+        await fetch(`${url}/${senderData.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...senderData,
+            balance: senderData.balance,
+            transactions: senderData.transactions, // Revert to original transactions
+          }),
+        });
 
         // Optionally, revert recipient balance and transactions if necessary
 

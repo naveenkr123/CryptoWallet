@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Col, Container, Dropdown, Modal, Row } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { AppContext } from "./AppContext";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import avatar from "../assets/images/user.png";
@@ -10,9 +9,10 @@ function AdminPanel() {
   const [data, setData] = useState();
   const [searchUID, setSearchUID] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
-  const myContext = useContext(AppContext);
+  const [dataLoaded, setDataLoaded] = useState(false); // Flag for data loading
   const navigate = useNavigate();
   const adminData = JSON.parse(sessionStorage.getItem("userData")) || "";
+  const isAuthenticated = sessionStorage.getItem("isAuthenticated") === "true";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -21,23 +21,26 @@ function AdminPanel() {
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
 
+  // redirect to admin login page if user is not logged in
   useEffect(() => {
-    const isAuthenticated =
-      sessionStorage.getItem("isAuthenticated") === "true";
     if (!isAuthenticated) {
       navigate("/admin-login");
     }
-  }, [navigate]);
+  }, [navigate, isAuthenticated]);
 
+  // fetch all users data for dashboard
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`http://${myContext.serverIP}:8000/users`);
-      const rawData = await response.json();
-      setData(rawData);
+      if (isAuthenticated && adminData && !dataLoaded) {
+        const response = await fetch(process.env.REACT_APP_ALL_USERS_DATA);
+        const rawData = await response.json();
+        setData(rawData);
+        setDataLoaded(true);
+      }
     } catch (err) {
       console.log(err);
     }
-  }, [myContext]);
+  }, [isAuthenticated, adminData, dataLoaded]);
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -197,6 +200,7 @@ function AdminPanel() {
       <Modal
         className="adminPanelModal"
         show={show}
+        size="sm"
         onHide={handleClose}
         centered
       >
@@ -205,12 +209,12 @@ function AdminPanel() {
             <img src={avatar} className="mx-auto" alt="img" height={"80px"} />
           </div>
           <div className="adminDetails">
-            <h5>{adminData.adminID}</h5>
+            <h6>{adminData.adminID}</h6>
             <p>{adminData.walletAddress}</p>
 
             <div className="d-flex align-items-center justify-content-center">
               <span class="material-symbols-outlined">currency_bitcoin</span>
-              <h1 className="m-0">{adminData.balance}</h1>
+              <h2 className="m-0">{adminData.balance}</h2>
             </div>
           </div>
         </Modal.Body>

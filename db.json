@@ -11,8 +11,8 @@
       "role": "user",
       "status": "active",
       "joiningDate": "24 Aug 2024",
-      "lastLogin": "4 Sept 2024, 5:54:04 pm",
-      "balance": 7,
+      "lastLogin": "5 Sept 2024, 11:40:27 am",
+      "balance": 6,
       "isNotification": false,
       "notifications": [
         {
@@ -114,6 +114,17 @@
           "amount": 3,
           "type": "debit",
           "status": "success"
+        },
+        {
+          "transactionID": "T5196793513452729",
+          "senderUID": "naveen123",
+          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "recipientUID": "Johan511",
+          "recipientWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "date": "5 Sept 2024",
+          "amount": 1,
+          "type": "debit",
+          "status": "success"
         }
       ]
     },
@@ -129,7 +140,7 @@
       "status": "active",
       "joiningDate": "24 Aug 2024",
       "lastLogin": "31 Aug 2024",
-      "balance": 5,
+      "balance": 6,
       "isNotification": false,
       "transactions": [
         {
@@ -195,6 +206,17 @@
           "recipientWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
           "date": "27 Aug 2024",
           "amount": 3,
+          "type": "credit",
+          "status": "success"
+        },
+        {
+          "transactionID": "T5196793513452729",
+          "senderUID": "naveen123",
+          "senderWA": "Q4Uxq7iq05BCfJ6BENMsR3eMgL3UopAl",
+          "recipientUID": "Johan511",
+          "recipientWA": "Qb8f5608mC7XQjRYMEnPimPYfPr59DvQ",
+          "date": "5 Sept 2024",
+          "amount": 1,
           "type": "credit",
           "status": "success"
         }

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "./AppContext";
 import admin_logo from "../assets/images/admin-panel.png";
 
 function AdminLogin() {
@@ -14,7 +12,6 @@ function AdminLogin() {
   const [authError, setAuthError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const myContext = useContext(AppContext);
   const navigate = useNavigate();
 
   function authentication(event) {
@@ -34,7 +31,7 @@ function AdminLogin() {
 
     try {
       const response = await fetch(
-        `http://${myContext.serverIP}:8000/admins?adminID=${userID}`
+        `${process.env.REACT_APP_ALL_ADMIN_DATA}?adminID=${userID}`
       );
       const userData = await response.json();
       // console.log("log", userData[0]);

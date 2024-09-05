@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { AppContext } from "./AppContext";
 import debitIcon from "../assets/images/arrowup.svg";
 import creditIcon from "../assets/images/arrowdown.svg";
 
@@ -10,9 +9,8 @@ function Transactions() {
   const [liveData, setLiveData] = useState();
   const [filterType, setFilterType] = useState("all");
   const [searchTxnID, setSearchTxnID] = useState("");
-  const [dataLoaded, setDataLoaded] = useState(false); // Flag for data loading
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  const myContext = useContext(AppContext);
   const navigate = useNavigate();
   const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
 
@@ -29,11 +27,11 @@ function Transactions() {
       async function fetchUserData() {
         try {
           const response = await fetch(
-            `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+            `${process.env.REACT_APP_ALL_USERS_DATA}?walletAddress=${userData.walletAddress}`
           );
           const rawData = await response.json();
           setLiveData(rawData[0]);
-          setDataLoaded(true); // Set flag to true once data is loaded
+          setDataLoaded(true);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -41,7 +39,7 @@ function Transactions() {
 
       fetchUserData();
     }
-  }, [userData, myContext.serverIP, dataLoaded]);
+  }, [userData, dataLoaded]);
 
   const handleFilterChange = (event) => {
     const value = event.target.value;

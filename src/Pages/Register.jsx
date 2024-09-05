@@ -1,13 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Wrapper from "../Components/Wrapper";
-import { AppContext } from "./AppContext";
 
 function Register() {
-  const myContext = useContext(AppContext);
-  const navigate = useNavigate();
-
+  const [errors, setErrors] = useState({});
+  const [accountSuccess, setAccountSuccess] = useState(false);
   const [formData, setFormData] = useState({
     userID: "",
     password: "",
@@ -16,9 +14,8 @@ function Register() {
     repeatPIN: "",
     isChecked: false,
   });
-
-  const [errors, setErrors] = useState({});
-  const [accountSuccess, setAccountSuccess] = useState(false);
+  const url = process.env.REACT_APP_ALL_USERS_DATA;
+  const navigate = useNavigate();
 
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()} ${currentDate.toLocaleString(
@@ -58,9 +55,7 @@ function Register() {
 
   const checkUserIDExists = async (userID) => {
     try {
-      const response = await fetch(
-        `http://${myContext.serverIP}:8000/users?userID=${userID}`
-      );
+      const response = await fetch(`${url}?userID=${userID}`);
       const contentLength = response.headers.get("Content-Length");
       return parseInt(contentLength) !== 2;
     } catch (error) {
@@ -109,16 +104,13 @@ function Register() {
     };
 
     try {
-      const createUserResponse = await fetch(
-        `http://${myContext.serverIP}:8000/users`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newUser),
-        }
-      );
+      const createUserResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
 
       if (createUserResponse.ok) {
         setAccountSuccess(true);

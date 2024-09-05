@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../Components/Wrapper";
 import { Col, Container, Row, Tab, Tabs } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { AppContext } from "./AppContext";
 
 function Register() {
   const [currentPass, setCurrentPass] = useState("");
@@ -22,10 +21,9 @@ function Register() {
   const [deletionError, setDeletionError] = useState(false);
   const [accountDeleted, setAccountDeleted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const myContext = useContext(AppContext);
-  const navigate = useNavigate();
   const userData = JSON.parse(sessionStorage.getItem("userData")) || "";
+  const url = process.env.REACT_APP_ALL_USERS_DATA;
+  const navigate = useNavigate();
 
   // Redirect to login if userData is not available
   useEffect(() => {
@@ -54,19 +52,16 @@ function Register() {
         } else {
           try {
             const res = await fetch(
-              `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+              `${url}?walletAddress=${userData.walletAddress}`
             );
             const liveData = await res.json();
-            const response = await fetch(
-              `http://${myContext.serverIP}:8000/users/${liveData[0].id}`,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ ...liveData[0], password: newPass }),
-              }
-            );
+            const response = await fetch(`${url}/${liveData[0].id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ ...liveData[0], password: newPass }),
+            });
 
             // Handle response
             if (response.ok) {
@@ -105,23 +100,20 @@ function Register() {
       } else {
         try {
           const res = await fetch(
-            `http://${myContext.serverIP}:8000/users?walletAddress=${userData.walletAddress}`
+            `${url}?walletAddress=${userData.walletAddress}`
           );
           const liveData = await res.json();
-          const response = await fetch(
-            `http://${myContext.serverIP}:8000/users/${liveData[0].id}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                ...liveData[0],
-                pin: pinInput,
-                TFA: true,
-              }),
-            }
-          );
+          const response = await fetch(`${url}/${liveData[0].id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...liveData[0],
+              pin: pinInput,
+              TFA: true,
+            }),
+          });
 
           if (response.ok) {
             setPinChange(true);
@@ -137,7 +129,7 @@ function Register() {
 
   function deleteAccount() {
     if (deletionConfirm === userData.userID) {
-      fetch(`http://${myContext.serverIP}:8000/users/${userData.id}`, {
+      fetch(`${url}/${userData.id}`, {
         method: "DELETE",
       })
         .then((response) => {
